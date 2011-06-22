@@ -1,0 +1,99 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>nl.bstoi.poiparser</groupId>
+	<artifactId>PoiParser</artifactId>
+	<packaging>jar</packaging>
+	<name>${project.artifactId}</name>
+	<version>1.8-SNAPSHOT</version>
+
+	<description>
+	PoiParser allows to read/write 2-dimensional datasets from Excel/POI files using Apache-POI and annotations.
+	</description>
+
+	<scm>
+		<connection>scm:svn:http://10.0.0.22/svn/PoiParser/trunk</connection>
+		<developerConnection>scm:svn:http://10.0.0.22/svn/PoiParser/trunk</developerConnection>
+	</scm>
+
+	<!-- Meta information -->
+	<inceptionYear>2011</inceptionYear>
+	<organization>
+		<name>BSTOI</name>
+		<url>http://www.bstoi.nl</url>
+	</organization>
+
+	<!-- Developer info -->
+	<developers>
+		<developer>
+			<name>Hylke Stapersma</name>
+			<id>hylke</id>
+			<email>hylke.stapersma@gmail.com</email>
+			<timezone>+1</timezone>
+			<organization>BSTOI</organization>
+			<organizationUrl>http://www.bstoi.nl/</organizationUrl>
+			<roles>
+				<role>project lead</role>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<!-- Dependencies -->
+	<dependencies>
+		<!-- Test dependecies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.5</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Library dependies -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+	</dependencies>
+
+	<!-- Properties -->
+	<properties>
+		<poi.version>3.7</poi.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<!-- Build properties -->
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<additionalClasspathElements>
+						<additionalClasspathElement>test-classes/</additionalClasspathElement>
+					</additionalClasspathElements>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
