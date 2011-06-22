@@ -11,9 +11,11 @@
 	PoiParser allows to read/write 2-dimensional datasets from Excel/POI files using Apache-POI and annotations.
 	</description>
 
+	<!-- Source code management information -->
 	<scm>
-		<connection>scm:svn:http://10.0.0.22/svn/PoiParser/trunk</connection>
-		<developerConnection>scm:svn:http://10.0.0.22/svn/PoiParser/trunk</developerConnection>
+		<connection>scm:git://github.com/Hylke192/PoiParser.git</connection>
+		<developerConnection>scm:git:git@github.com:Hylke1982/PoiParser.git</developerConnection>
+		<url>http://github.com/Hylke1982/PoiParser/tree/master</url>
 	</scm>
 
 	<!-- Meta information -->
