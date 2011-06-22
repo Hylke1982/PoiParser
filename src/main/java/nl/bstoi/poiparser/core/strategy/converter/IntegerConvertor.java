@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 public class IntegerConvertor implements Converter<Integer>{
 	
-	@Override
 	public Integer readCell(Cell cell) {
 		Double cellValue = null;
 		if(null!=cell){
@@ -22,7 +21,6 @@ public class IntegerConvertor implements Converter<Integer>{
 		return null;
 	}
 	
-	@Override
 	public void writeCell(Cell cell, Integer value) {
 		if(null!=value) cell.setCellValue(value);
 	}

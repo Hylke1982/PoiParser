@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 public class LongConverter implements Converter<Long> {
 	
-	@Override
 	public Long readCell(Cell cell) {
 		Double cellValue = null;
 		if(null!=cell){
@@ -22,7 +21,6 @@ public class LongConverter implements Converter<Long> {
 		return null;
 	}
 	
-	@Override
 	public void writeCell(Cell cell, Long value) {
 		if(null!=value) cell.setCellValue(value);
 	}

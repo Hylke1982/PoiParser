@@ -6,7 +6,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 public class ShortConverter implements Converter<Short> {
 	
-	@Override
 	public Short readCell(Cell cell) {
 		Double cellValue = null;
 		if(null!=cell){
@@ -22,7 +21,6 @@ public class ShortConverter implements Converter<Short> {
 		return null;
 	}
 	
-	@Override
 	public void writeCell(Cell cell, Short value) {
 		if(null!=value)cell.setCellValue(value.doubleValue());		
 	}

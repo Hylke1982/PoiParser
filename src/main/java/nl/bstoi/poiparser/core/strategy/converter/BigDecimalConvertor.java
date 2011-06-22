@@ -8,7 +8,6 @@ import org.apache.poi.ss.usermodel.Cell;
 
 public class BigDecimalConvertor implements Converter<BigDecimal>{
 	
-	@Override
 	public BigDecimal readCell(Cell cell) {
 		Double cellValue = null;
 		if(null!=cell){
@@ -25,7 +24,6 @@ public class BigDecimalConvertor implements Converter<BigDecimal>{
 	}
 	
 	
-	@Override
 	public void writeCell(Cell cell, BigDecimal value) {
 		if(null!=value) cell.setCellValue(value.doubleValue());
 	}

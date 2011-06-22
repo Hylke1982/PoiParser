@@ -9,7 +9,6 @@ public class BooleanConverter implements Converter<Boolean>{
 	public final static String[] trueStringValue = {"yes","ja","true","1"};
 	public final static int[] trueIntegerValue = {1};
 	
-	@Override
 	public Boolean readCell(Cell cell) {
 		if(cell.getCellType() == Cell.CELL_TYPE_BOOLEAN){
 			return cell.getBooleanCellValue();
@@ -36,7 +35,6 @@ public class BooleanConverter implements Converter<Boolean>{
 		return false;
 	}
 	
-	@Override
 	public void writeCell(Cell cell, Boolean value) {
 		if(null!=value) cell.setCellValue(value);
 		

@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.DateUtil;
 
 public class StringConverter implements Converter<String>{
 
-	@Override
 	public String readCell(Cell cell) {
 		
 		if(null!=cell && cell.getCellType() == Cell.CELL_TYPE_STRING){				
@@ -26,7 +25,6 @@ public class StringConverter implements Converter<String>{
 		return null;
 	}
 	
-	@Override
 	public void writeCell(Cell cell, String value) {
 		CreationHelper creationHelper = cell.getSheet().getWorkbook().getCreationHelper();
 		cell.setCellValue(creationHelper.createRichTextString(value));		
