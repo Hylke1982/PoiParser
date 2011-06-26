@@ -1,0 +1,5 @@
+# Ignored resources
+target/
+.settings/
+.classpath
+*.project
