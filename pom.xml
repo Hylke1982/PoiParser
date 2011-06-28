@@ -13,9 +13,8 @@
 
 	<!-- Source code management information -->
 	<scm>
-		<connection>scm:git://github.com/Hylke192/PoiParser.git</connection>
-		<developerConnection>scm:git:git@github.com:Hylke1982/PoiParser.git</developerConnection>
-		<url>http://github.com/Hylke1982/PoiParser/tree/master</url>
+		<connection>scm:git:git://github.com/Hylke192/PoiParser.git</connection>
+		<url>scm:git:git://github.com/Hylke192/PoiParser.git</url>
 	</scm>
 
 	<!-- License information -->
@@ -29,6 +28,7 @@
 
 
 	<!-- Meta information -->
+	<url>http://www.bstoi.nl/PoiParser</url>
 	<inceptionYear>2011</inceptionYear>
 	<organization>
 		<name>BSTOI</name>
@@ -118,6 +118,17 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.1-db-1</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>
