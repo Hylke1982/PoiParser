@@ -14,7 +14,7 @@
 	<!-- Source code management information -->
 	<scm>
 		<connection>scm:git:git://github.com/Hylke192/PoiParser.git</connection>
-		<developerConnection>scm:git:ssh://git@github.com:Hylke1982/PoiParser.git</developerConnection>
+		<developerConnection>scm:git:ssh://git@github.com/Hylke1982/PoiParser.git</developerConnection>
 		<url>http://github.com/Hylke1982/PoiParser</url>
 	</scm>
 
