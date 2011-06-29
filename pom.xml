@@ -13,9 +13,9 @@
 
 	<!-- Source code management information -->
 	<scm>
-		<connection>scm:git://github.com/Hylke192/PoiParser.git</connection>
-		<developerConnection>scm:git:git@github.com:Hylke1982/PoiParser.git</developerConnection>
-		<url>http://github.com/Hylke1982/PoiParser/tree/master</url>
+		<connection>scm:git:git://github.com/Hylke192/PoiParser.git</connection>
+		<developerConnection>scm:git:ssh://git@github.com:Hylke1982/PoiParser.git</developerConnection>
+		<url>http://github.com/Hylke1982/PoiParser</url>
 	</scm>
 
 	<!-- Meta information -->
@@ -98,4 +98,35 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<!-- Profiles -->
+	<profiles>
+		<profile>
+			<id>release-sign-artifacts</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
