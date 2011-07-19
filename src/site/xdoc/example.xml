@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>PoiParser code examples</title>
+		<author email="hylke.stapersma@gmail.com">Hylke Stapersma</author>
+	</properties>
+
+	<body>
+
+		<!-- The body of the document contains a number of sections -->
+		<section name="Reading an Excel file">
+
+			<!-- Within sections, any XHTML can be used -->
+			<p>The read a Excel file containing a 2-dimensional dataset you have to consider the following:</p>
+			<ul>
+				<li>A annotated pojo with unique column number</li>
+				<li>The AnnotatedPoiParser</li>
+				<li>A specific read configuration</li>
+			</ul>
+
+			<!-- in addition to XHTML, any number of subsections can be within a section -->
+			<subsection name="Annotated pojo">
+				<p>
+				A annotated pojo represents a row in a excel file, the columns are 
+				mapped on the fields or on the properties (getters and setters). Each 
+				column can be defined once, in the case of inheritance the subclass 
+				@Cell annotation will override the mapping of the superclass.
+				</p>
+				<p>
+				The @Cell annotation allows you to have specify behavior of the PoiParser. 
+				You can instruct the PoiParser if the column is required or that the column 
+				is ignored while reading or writing.
+				</p>
+				<source>
+import nl.bstoi.poiparser.api.strategy.annotations.Cell;
+
+public class TestRow {
+	
+	@Cell(columnNumber=0,required=true)
+	private Long id;
+	
+	@Cell(columnNumber=1)
+	private String name;
+	
+	private String description;
+	
+	private String methodField;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Cell(columnNumber=2)
+	public String getMethodField() {
+		return methodField;
+	}
+
+	public void setMethodField(String methodField) {
+		this.methodField = methodField;
+	}
+
+}					
+				</source>
+			</subsection>
+			
+			<subsection name="The AnnotatedPoiParser">
+				<p>
+				The AnnotatedPoiParser is the extended implementation of the AbstractPoiParser 
+				which is responsible for actually reading and writing the Excel file. The 
+				AnnotatedPoiParser reads the @Cell annotations on a class and defines a mapping 
+				that can be used by the AbstractPoiParser. 
+				</p>
+				<source>
+// Initialize the AnnotatedPoiFileParser
+AnnotatedPoiFileParser&lt;TestRow&gt; annotationExcelParser = new AnnotatedPoiFileParser&lt;TestRow&gt;();
+// Load excel file
+File excelFile = new File("/path/to/excelfile");
+// Read the excel, with sheet name "Sheet3"
+List&lt;TestRow&gt; testRows = annotationExcelParser.readExcelFile(excelFile, "Sheet3", TestRow.class);
+				</source>
+			
+			</subsection>
+			
+			
+			<subsection name="Specific read configuration">
+				<p>
+				The PoiParser can be instructed with extra hints for reading or 
+				writing a Excel file. The following instructions can be given to 
+				the PoiParser.
+				</p>
+				<ul>
+					<li>Ignore empty rows, if empty rows are ignored while reading.</li>
+					<li>Ignore first row, if first row is ignored.</li>
+					<li>Create header row, if a header row is created when a Excel file is written.</li>
+					<li>
+					Remove write ignore columns, columns that not used for writing are not used 
+					for writing and removed. (This means columns no empty columns are written in the Excel file)
+					</li>
+				</ul>
+				<source>
+List&lt;TestRow&gt; testRows = annotationExcelParser.readExcelFile(excelFile, "Sheet3", TestRow.class);
+annotationExcelParser.setIgnoreEmptyRows(true); // Empty rows are now ignored while reading
+annotationExcelParser.setIgnoreFirstRow(true); // The first row is now ignored
+				</source>
+			</subsection>
+
+		</section>
+
+	</body>
+
+</document>

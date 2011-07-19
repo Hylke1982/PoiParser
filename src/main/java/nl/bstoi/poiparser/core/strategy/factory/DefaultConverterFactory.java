@@ -1,6 +1,7 @@
 package nl.bstoi.poiparser.core.strategy.factory;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +24,7 @@ public class DefaultConverterFactory {
 		registerConverter(Long.TYPE, LongConverter.class);
 		registerConverter(BigDecimal.class, BigDecimalConvertor.class);
 		registerConverter(Date.class, DateConverter.class);
+		registerConverter(Calendar.class, CalendarConverter.class);
 		registerConverter(Boolean.class, BooleanConverter.class);
 		registerConverter(Boolean.TYPE, BooleanConverter.class);
 	}

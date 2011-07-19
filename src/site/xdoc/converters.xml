@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document xmlns="http://maven.apache.org/XDOC/2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/XDOC/2.0 http://maven.apache.org/xsd/xdoc-2.0.xsd">
+
+	<properties>
+		<title>PoiParser converters</title>
+		<author email="hylke.stapersma@gmail.com">Hylke Stapersma</author>
+	</properties>
+
+	<body>
+
+		<!-- The body of the document contains a number of sections -->
+		<section name="Introduction">
+			<p>
+			Converter are classes that allow you to convert Java types 
+			back and forward from a apache POI cell. You're also allowed 
+			to implement your converters and register them for parsing.
+			</p>
+			<subsection name="Type support">
+				<p>The PoiParser currently supports the following types.</p>
+				<ul>
+					<li>BigDecimal</li>
+					<li>Boolean</li>
+					<li>Calendar</li>
+					<li>Date</li>
+					<li>Integer</li>
+					<li>Long</li>
+					<li>Short</li>
+					<li>String</li>
+				</ul>
+			</subsection>
+			<subsection name="Creating and registering your own converter">
+				<p>
+				You're able to create and register your own converter to 
+				convert the a Excel cell into a specific Java field. You're 
+				code will look something like this.
+				</p>
+				<source>
+package nl.bstoi.poiparser.core.strategy.converter;
+
+import nl.bstoi.poiparser.api.strategy.converter.Converter;
+
+import org.apache.poi.ss.usermodel.Cell;
+
+public class LongConverter implements Converter&lt;Long&gt; {
+	
+	public Long readCell(Cell cell) {
+		Double cellValue = null;
+		if(null!=cell){
+			try{
+				// First try to read as a numeric
+				cellValue = cell.getNumericCellValue();
+			}catch(IllegalStateException isex){
+				// Other wise do string conversion
+				cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
+			}
+		}
+		if(null!=cellValue) return cellValue.longValue();
+		return null;
+	}
+	
+	public void writeCell(Cell cell, Long value) {
+		if(null!=value) cell.setCellValue(value);
+	}
+
+}
+				</source>
+				<p>You can register your converter using the following code line.</p>
+				<source>
+AnnotatedPoiFileParser&lt;TestRow&gt; annotationExcelParser = new AnnotatedPoiFileParser&lt;TestRow&gt;();
+annotatedExcelFileParser.getDefaultConverterFactory().registerConverter(Boolean.class, BooleanConverter.class); // Register a boolean converter
+List&lt;TestRow&gt; testRows = annotationExcelParser.readExcelFile(excelFile, "Sheet3", TestRow.class);
+				</source>
+			</subsection>
+		</section>
+	</body>
+</document>

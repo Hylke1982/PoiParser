@@ -44,7 +44,7 @@
 	<!-- Meta information -->
 	<inceptionYear>2011</inceptionYear>
 	<organization>
-		<name>BSTOI</name>
+		<name>BSTOI.NL</name>
 		<url>http://www.bstoi.nl</url>
 	</organization>
 
@@ -55,7 +55,7 @@
 			<id>hylke</id>
 			<email>hylke.stapersma@gmail.com</email>
 			<timezone>+1</timezone>
-			<organization>BSTOI</organization>
+			<organization>BSTOI.NL</organization>
 			<organizationUrl>http://www.bstoi.nl/</organizationUrl>
 			<roles>
 				<role>project lead</role>

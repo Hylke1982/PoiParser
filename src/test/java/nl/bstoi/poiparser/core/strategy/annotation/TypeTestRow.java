@@ -1,6 +1,7 @@
 package nl.bstoi.poiparser.core.strategy.annotation;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
 import java.util.Date;
 
 import nl.bstoi.poiparser.api.strategy.annotations.Cell;
@@ -27,6 +28,9 @@ public class TypeTestRow {
 	
 	@Cell(columnNumber=6)
 	private Boolean booleanValue;
+	
+	@Cell(columnNumber=7)
+	private Calendar calendarValue;
 
 	public Short getShortValue() {
 		return shortValue;
@@ -82,6 +86,14 @@ public class TypeTestRow {
 
 	public void setBooleanValue(Boolean booleanValue) {
 		this.booleanValue = booleanValue;
+	}
+
+	public Calendar getCalendarValue() {
+		return calendarValue;
+	}
+
+	public void setCalendarValue(Calendar calendarValue) {
+		this.calendarValue = calendarValue;
 	}
 
 }
