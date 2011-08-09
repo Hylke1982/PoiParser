@@ -75,6 +75,72 @@ public abstract class AbstractPoiFileParser<T> {
 	
 	public abstract List<T> readExcelFile(InputStream inputStream,String sheetName,Class<T> clazz) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException;
 	
+	/**
+	 * Read a excel file from start row to end row 
+	 * @param excelFile
+	 * @param sheetName
+	 * @param clazz
+	 * @param startRow
+	 * @param endRow
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws RequiredFieldPoiParserException
+	 * @throws ReadPoiParserException
+	 */
+	public abstract List<T> readExcelFile(File excelFile,String sheetName,Class<T> clazz,int startRow,int endRow) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException;
+	
+	/**
+	 * Read a excel file from start row to last row.
+	 * @param excelFile
+	 * @param sheetName
+	 * @param clazz
+	 * @param startRow
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws RequiredFieldPoiParserException
+	 * @throws ReadPoiParserException
+	 */
+	public abstract List<T> readExcelFile(File excelFile,String sheetName,Class<T> clazz,int startRow) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException;
+	
+	/**
+	 * Read a excel file inputstream start row to end row
+	 * @param inputStream
+	 * @param sheetName
+	 * @param clazz
+	 * @param startRow
+	 * @param endRow
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws RequiredFieldPoiParserException
+	 * @throws ReadPoiParserException
+	 */
+	public abstract List<T> readExcelFile(InputStream inputStream,String sheetName,Class<T> clazz,int startRow,int endRow) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException;
+	
+	/**
+	 * Read a excel file input stream from given start row until last row
+	 * @param inputStream
+	 * @param sheetName
+	 * @param clazz
+	 * @param startRow
+	 * @return
+	 * @throws IOException
+	 * @throws FileNotFoundException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws RequiredFieldPoiParserException
+	 * @throws ReadPoiParserException
+	 */
+	public abstract List<T> readExcelFile(InputStream inputStream,String sheetName,Class<T> clazz,int startRow) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException;
+	
 	public abstract void writeExcelFile(OutputStream outputStream,LinkedHashMap<String, List<T>> excelDataMap,Class<T> clazz) throws IOException, InitialWritePoiParserException,WritePoiParserException;
 	
 	//----------------------------------------------------------------------------------//
@@ -102,6 +168,27 @@ public abstract class AbstractPoiFileParser<T> {
 						T rowObject = readRow(sheet.getSheetName(),row, clazz.newInstance());
 						dimensionList.add(rowObject);
 					}
+				}
+			}
+		}
+		return dimensionList;
+	}
+	
+	protected List<T> readSheet(Sheet sheet,Class<T> clazz, int startRow) throws InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException{
+		if(null!=sheet){
+			return readSheet(sheet, clazz, startRow, sheet.getLastRowNum());
+		}
+		return new ArrayList<T>();
+	}
+	
+	protected List<T> readSheet(Sheet sheet,Class<T> clazz, int startRow, int endRow) throws InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException{
+		List<T> dimensionList = new ArrayList<T>();
+		if(null!=sheet){
+			for(int i = startRow;i<=endRow;i++){
+				Row row = (Row)sheet.getRow(i);
+				if(!ignoreRow(row)){
+					T rowObject = readRow(sheet.getSheetName(),row, clazz.newInstance());
+					dimensionList.add(rowObject);
 				}
 			}
 		}

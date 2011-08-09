@@ -63,8 +63,45 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 		return dimensionList;
 	}
 	
+	
+	
+	@Override
+	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow, int endRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
+		FileInputStream fis = null;
+		fis = new FileInputStream(excelFile);		
+		List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow,endRow);		
+		fis.close(); // Close file stream
+		return dimensionList;
+	}
+	
+	@Override
+	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
+		FileInputStream fis = null;
+		fis = new FileInputStream(excelFile);		
+		List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow);		
+		fis.close(); // Close file stream
+		return dimensionList;
+	}
+	
 	@Override
 	public List<T> readExcelFile(InputStream inputStream,String sheetName,Class<T> clazz) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException{
+		Sheet sheet = getSheetFromInputStream(inputStream, sheetName, clazz);		
+		return readSheet(sheet, clazz);
+	}
+	
+	@Override
+	public List<T> readExcelFile(InputStream inputStream, String sheetName,Class<T> clazz, int startRow, int endRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
+		Sheet sheet = getSheetFromInputStream(inputStream, sheetName, clazz);		
+		return readSheet(sheet, clazz,startRow,endRow);
+	}
+	
+	@Override
+	public List<T> readExcelFile(InputStream inputStream, String sheetName,Class<T> clazz, int startRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
+		Sheet sheet = getSheetFromInputStream(inputStream, sheetName, clazz);		
+		return readSheet(sheet, clazz,startRow);
+	}
+
+	private Sheet getSheetFromInputStream(InputStream inputStream,String sheetName, Class<T> clazz) throws IOException {
 		// Get mapping for classfile
 		if(getColumnFieldNameMapping().isEmpty()) parseExcelMappingForClass(clazz);		
 		// Open excel file		
@@ -77,8 +114,8 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 			e.printStackTrace();
 		}
 		// Get correct sheet.
-		Sheet sheet=workbook.getSheet(sheetName);		
-		return readSheet(sheet, clazz);
+		Sheet sheet=workbook.getSheet(sheetName);
+		return sheet;
 	}
 	
 	@Override
