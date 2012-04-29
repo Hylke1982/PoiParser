@@ -35,6 +35,10 @@ public class BooleanConverter implements Converter<Boolean>{
 		return false;
 	}
 	
+	public Boolean readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Boolean value) {
 		if(null!=value) cell.setCellValue(value);
 		

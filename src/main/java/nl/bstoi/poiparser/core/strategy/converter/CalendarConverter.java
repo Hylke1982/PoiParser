@@ -17,6 +17,10 @@ public class CalendarConverter implements Converter<Calendar> {
 		return null;
 	}
 	
+	public Calendar readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Calendar value) {
 		if(null!=value) cell.setCellValue(value);	
 	}

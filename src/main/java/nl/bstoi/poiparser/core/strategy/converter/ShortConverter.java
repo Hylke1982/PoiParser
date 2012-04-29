@@ -21,6 +21,10 @@ public class ShortConverter implements Converter<Short> {
 		return null;
 	}
 	
+	public Short readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Short value) {
 		if(null!=value)cell.setCellValue(value.doubleValue());		
 	}

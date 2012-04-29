@@ -34,7 +34,7 @@ public @interface Cell {
 	boolean writeIgnore() default false;
 	
 	/**
-	 * Validation rule based on regular expression
+	 * Validation rule based on regular expression can only be used with String cell types
 	 * @return
 	 */
 	String regex() default "";

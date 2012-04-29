@@ -16,6 +16,10 @@ public class DateConverter implements Converter<Date>{
 		return null;
 	}
 	
+	public Date readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Date value) {
 		if(null!=value) cell.setCellValue(value);	
 	}

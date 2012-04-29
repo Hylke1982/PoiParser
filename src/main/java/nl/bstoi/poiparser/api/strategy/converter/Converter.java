@@ -14,8 +14,11 @@ public interface Converter<T> {
 	/**
 	 * Read a Cell and convert to <T>
 	 * @param cell
+	 * @param regex regex validation
 	 * @return
 	 */
+	public T readCell(Cell cell, String regex);
+	
 	public T readCell(Cell cell);
 	
 	/**

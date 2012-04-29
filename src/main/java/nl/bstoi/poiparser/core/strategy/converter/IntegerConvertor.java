@@ -21,6 +21,10 @@ public class IntegerConvertor implements Converter<Integer>{
 		return null;
 	}
 	
+	public Integer readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Integer value) {
 		if(null!=value) cell.setCellValue(value);
 	}

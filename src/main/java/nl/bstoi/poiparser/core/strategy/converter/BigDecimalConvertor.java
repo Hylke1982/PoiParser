@@ -1,6 +1,7 @@
 package nl.bstoi.poiparser.core.strategy.converter;
 
 import java.math.BigDecimal;
+import java.util.regex.Pattern;
 
 import nl.bstoi.poiparser.api.strategy.converter.Converter;
 
@@ -9,6 +10,10 @@ import org.apache.poi.ss.usermodel.Cell;
 public class BigDecimalConvertor implements Converter<BigDecimal>{
 	
 	public BigDecimal readCell(Cell cell) {
+		return readCell(cell,null);
+	}
+	
+	public BigDecimal readCell(Cell cell,String regex) {
 		Double cellValue = null;
 		if(null!=cell){
 			try{
@@ -16,7 +21,17 @@ public class BigDecimalConvertor implements Converter<BigDecimal>{
 				cellValue = cell.getNumericCellValue();
 			}catch(IllegalStateException isex){
 				// Other wise do string conversion
-				cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
+				if(null!=regex&&!regex.isEmpty()){
+					Pattern pattern = Pattern.compile(regex);
+					if(pattern.matcher(cell.getRichStringCellValue().getString().trim()).matches()){
+						cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
+					}else{
+						return null;
+					}
+				}else{
+					cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
+				}
+				
 			}
 		}
 		if(null!=cellValue) return new BigDecimal(cellValue);

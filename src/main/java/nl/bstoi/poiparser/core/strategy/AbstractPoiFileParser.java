@@ -15,6 +15,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import nl.bstoi.poiparser.api.strategy.converter.Converter;
 import nl.bstoi.poiparser.core.InitialWritePoiParserException;
@@ -37,6 +39,7 @@ public abstract class AbstractPoiFileParser<T> {
 	private final static Log log = LogFactory.getLog(AbstractPoiFileParser.class);
 		
 	private Map<String,Integer> columnFieldNameMapping = new HashMap<String, Integer>();
+	private Map<String,String> columnFieldRegexValidationMapping = new HashMap<String, String>();
 	private Set<Integer> requiredFields = new HashSet<Integer>();
 	private Set<Integer> writeIgnoreColumns = new HashSet<Integer>();
 	private Set<Integer> readIgnoreColumns = new HashSet<Integer>();
@@ -474,6 +477,16 @@ public abstract class AbstractPoiFileParser<T> {
 	 */
 	public void addRequiredField(Integer columnNumber){
 		requiredFields.add(columnNumber);		
+	}
+	
+	/**
+	 * Validate if regex patter is correct and it to the validation rules
+	 * @param fieldName
+	 * @param regex
+	 */
+	public void addColumnFieldRegex(String fieldName,String regex){
+		Pattern.compile(regex);
+		columnFieldRegexValidationMapping.put(fieldName, regex);
 	}
 	
 	/**

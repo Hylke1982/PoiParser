@@ -21,6 +21,10 @@ public class LongConverter implements Converter<Long> {
 		return null;
 	}
 	
+	public Long readCell(Cell cell, String regex) {
+		return readCell(cell);
+	}
+	
 	public void writeCell(Cell cell, Long value) {
 		if(null!=value) cell.setCellValue(value);
 	}

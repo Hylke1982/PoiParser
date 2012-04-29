@@ -160,7 +160,7 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 					boolean ignoreWrite = (null==propertyDescriptor.getReadMethod()||cell.writeIgnore()); // Whether the property can be written excel and be read to from bean
 					if(!uniquePropertiesForClass.contains(propertyDescriptor.getName())){
 						uniquePropertiesForClass.add(propertyDescriptor.getName());
-						addColumnFieldMapping(propertyDescriptor.getName(), cell.columnNumber(), cell.required(), ignoreRead, ignoreWrite);
+						addColumnFieldMapping(propertyDescriptor.getName(), cell.columnNumber(), cell.required(), ignoreRead, ignoreWrite, cell.regex());
 					}else{
 						// Throw exception when field 
 						throw new IllegalStateException("Field name ["+propertyDescriptor.getName()+"] is defined more than once for parsing");
@@ -173,17 +173,19 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	
 	/**
 	 * Adds a new field to the abstract excel parser.
-	 * @param fieldName The name of the field
-	 * @param columnNumber the column number in the excel file
-	 * @param required if field is required value
-	 * @param readIgnore if the field must be ignored while reading
-	 * @param writeIgnore if the field must be ignored while writing
+	 * @param fieldName
+	 * @param columnNumber
+	 * @param required
+	 * @param readIgnore
+	 * @param writeIgnore
+	 * @param fieldRegex
 	 */
-	private void addColumnFieldMapping(String fieldName,Integer columnNumber,boolean required,boolean readIgnore,boolean writeIgnore){
+	private void addColumnFieldMapping(String fieldName,Integer columnNumber,boolean required,boolean readIgnore,boolean writeIgnore,String fieldRegex){
 		addColumnFieldNameMapping(fieldName, columnNumber);
 		if(required)addRequiredField(columnNumber);
 		if(readIgnore)addReadIgnoreColumn(columnNumber);
 		if(writeIgnore)addWriteIgnoreColumn(columnNumber);
+		if(null!=fieldRegex&&!fieldRegex.isEmpty())  addColumnFieldRegex(fieldName, fieldRegex);
 	}
 
 
