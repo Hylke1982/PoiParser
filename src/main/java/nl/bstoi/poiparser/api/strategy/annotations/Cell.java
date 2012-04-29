@@ -32,5 +32,11 @@ public @interface Cell {
 	 * @return
 	 */
 	boolean writeIgnore() default false;
+	
+	/**
+	 * Validation rule based on regular expression
+	 * @return
+	 */
+	String regex() default "";
 
 }
