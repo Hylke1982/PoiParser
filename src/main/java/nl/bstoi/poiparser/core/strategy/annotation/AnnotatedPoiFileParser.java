@@ -57,9 +57,13 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	@Override
 	public List<T> readExcelFile(File excelFile,String sheetName,Class<T> clazz) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException{
 		FileInputStream fis = null;
-		fis = new FileInputStream(excelFile);		
-		List<T> dimensionList = readExcelFile(fis, sheetName, clazz);		
-		fis.close(); // Close file stream
+		fis = new FileInputStream(excelFile);
+		try {
+			List<T> dimensionList = readExcelFile(fis, sheetName, clazz);
+		} finally {
+			fis.close(); // Close file stream
+			
+		}
 		return dimensionList;
 	}
 	
@@ -69,17 +73,24 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow, int endRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
 		FileInputStream fis = null;
 		fis = new FileInputStream(excelFile);		
-		List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow,endRow);		
-		fis.close(); // Close file stream
+		try {
+			List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow,endRow);		
+		} finally {
+			fis.close(); // Close file stream
+		}
 		return dimensionList;
 	}
 	
 	@Override
 	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
 		FileInputStream fis = null;
-		fis = new FileInputStream(excelFile);		
-		List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow);		
-		fis.close(); // Close file stream
+		fis = new FileInputStream(excelFile);
+		try {
+			List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow);		
+		} finally {
+			fis.close(); // Close file stream
+			
+		}
 		return dimensionList;
 	}
 	
