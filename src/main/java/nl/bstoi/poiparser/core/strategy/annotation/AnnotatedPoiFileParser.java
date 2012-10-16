@@ -18,6 +18,7 @@ import java.util.Set;
 import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 import nl.bstoi.poiparser.core.InitialWritePoiParserException;
 import nl.bstoi.poiparser.core.ReadPoiParserException;
+import nl.bstoi.poiparser.core.ReadPoiParserRuntimeException;
 import nl.bstoi.poiparser.core.RequiredFieldPoiParserException;
 import nl.bstoi.poiparser.core.WritePoiParserException;
 import nl.bstoi.poiparser.core.strategy.AbstractPoiFileParser;
@@ -58,12 +59,14 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	public List<T> readExcelFile(File excelFile,String sheetName,Class<T> clazz) throws IOException,FileNotFoundException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException{
 		FileInputStream fis = null;
 		fis = new FileInputStream(excelFile);
+		List<T> dimensionList = null;
 		try {
-			List<T> dimensionList = readExcelFile(fis, sheetName, clazz);
+			dimensionList = readExcelFile(fis, sheetName, clazz);
 		} finally {
 			fis.close(); // Close file stream
 			
 		}
+		if(null==dimensionList) throw new ReadPoiParserRuntimeException();
 		return dimensionList;
 	}
 	
@@ -72,12 +75,15 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	@Override
 	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow, int endRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
 		FileInputStream fis = null;
-		fis = new FileInputStream(excelFile);		
+		fis = new FileInputStream(excelFile);
+		List<T> dimensionList = null;
 		try {
-			List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow,endRow);		
+
+			dimensionList = readExcelFile(fis, sheetName, clazz,startRow,endRow);		
 		} finally {
 			fis.close(); // Close file stream
 		}
+		if(null==dimensionList) throw new ReadPoiParserRuntimeException();
 		return dimensionList;
 	}
 	
@@ -85,12 +91,14 @@ public class AnnotatedPoiFileParser<T> extends AbstractPoiFileParser<T>{
 	public List<T> readExcelFile(File excelFile, String sheetName,Class<T> clazz, int startRow) throws IOException,FileNotFoundException, InstantiationException,IllegalAccessException, RequiredFieldPoiParserException,ReadPoiParserException {
 		FileInputStream fis = null;
 		fis = new FileInputStream(excelFile);
+		List<T> dimensionList = null;
 		try {
-			List<T> dimensionList = readExcelFile(fis, sheetName, clazz,startRow);		
+			dimensionList = readExcelFile(fis, sheetName, clazz,startRow);		
 		} finally {
 			fis.close(); // Close file stream
 			
 		}
+		if(null==dimensionList) throw new ReadPoiParserRuntimeException();
 		return dimensionList;
 	}
 	
