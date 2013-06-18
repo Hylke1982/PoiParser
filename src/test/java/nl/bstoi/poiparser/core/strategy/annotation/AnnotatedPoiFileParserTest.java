@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
+import org.junit.Assert;
 import nl.bstoi.poiparser.core.InitialWritePoiParserException;
 import nl.bstoi.poiparser.core.ReadPoiParserException;
 import nl.bstoi.poiparser.core.RequiredFieldPoiParserException;
@@ -31,7 +31,7 @@ public class AnnotatedPoiFileParserTest {
 	private final static String writeSheet2 = "sheet-002";
 	
 	@Test
-	public void testReadExcelFile() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFile() throws Exception{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "Sheet2", TestRow.class);
@@ -39,7 +39,7 @@ public class AnnotatedPoiFileParserTest {
 	}
 	
 	@Test
-	public void testReadExcelFileWithRange() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFileWithRange() throws Exception{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "RangeTest", TestRow.class,10);
@@ -47,7 +47,7 @@ public class AnnotatedPoiFileParserTest {
 	}
 	
 	@Test
-	public void testReadExcelFileWithRangeOutsideDataSet() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFileWithRangeOutsideDataSet() throws Exception{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "RangeTest", TestRow.class,110,128);
@@ -55,7 +55,7 @@ public class AnnotatedPoiFileParserTest {
 	}
 	
 	@Test
-	public void testReadExcelFileWithStart() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFileWithStart() throws Exception{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "RangeTest", TestRow.class,10,18);
@@ -63,7 +63,7 @@ public class AnnotatedPoiFileParserTest {
 	}
 	
 	@Test
-	public void testReadExcelFileWithStartOutsideDataSet() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFileWithStartOutsideDataSet() throws Exception{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "RangeTest", TestRow.class,110);
@@ -71,7 +71,7 @@ public class AnnotatedPoiFileParserTest {
 	}
 	
 	@Test
-	public void testReadExcelFileWithEmptyRows() throws URISyntaxException,IOException, InstantiationException, IllegalAccessException, RequiredFieldPoiParserException, ReadPoiParserException{		
+	public void testReadExcelFileWithEmptyRows() throws Exception{
 		final String fileName = "test-excel-001.xlsx";
 		final File excelFile = new File(AnnotatedPoiFileParserTest.class.getResource(filePath+fileName).toURI());
 		List<TestRow> testRowClasses = annotationExcelParser.readExcelFile(excelFile, "Sheet3", TestRow.class);
@@ -118,7 +118,7 @@ public class AnnotatedPoiFileParserTest {
 	
 	@Test
 	public void testGetExcelMappingForClass(){
-		annotationExcelParser.parseExcelMappingForClass(TestRow.class);
+		annotationExcelParser.parseExcelMappingForClass(TestRow.class, null);
 		Map<String,Integer> excelMapping = annotationExcelParser.getColumnFieldNameMapping();
 		Assert.assertEquals(new Integer(0), excelMapping.get("id"));
 		Assert.assertEquals(new Integer(1), excelMapping.get("name"));
@@ -137,12 +137,22 @@ public class AnnotatedPoiFileParserTest {
 		Assert.assertTrue(annotationExcelParser.getWriteIgnoreColumns().contains(10));
 		
 	}
+
+    @Test
+    public void testGetExcelMappingForClassWithEmbedded(){
+        annotationExcelParser.parseExcelMappingForClass(EmbeddedTestRow.class, null);
+        Map<String,Integer> excelMapping = annotationExcelParser.getColumnFieldNameMapping();
+        Assert.assertEquals(new Integer(0), excelMapping.get("field1"));
+        Assert.assertEquals(new Integer(1), excelMapping.get("field2"));
+        Assert.assertEquals(new Integer(2), excelMapping.get("embeddableTestRow.field3"));
+        Assert.assertEquals(new Integer(3), excelMapping.get("embeddableTestRow.field4"));
+    }
 	
 	
 	@Test
 	public void testGetExcelMappingForExtendedClass(){
 		AnnotatedPoiFileParser<ExtendTestRow> annotationReadStrategy = new AnnotatedPoiFileParser<ExtendTestRow>();
-		annotationReadStrategy.parseExcelMappingForClass(ExtendTestRow.class);
+		annotationReadStrategy.parseExcelMappingForClass(ExtendTestRow.class, null);
 		Map<String,Integer> excelMapping = annotationReadStrategy.getColumnFieldNameMapping();
 		Assert.assertEquals(new Integer(0), excelMapping.get("id"));
 		Assert.assertEquals(new Integer(1), excelMapping.get("name"));
