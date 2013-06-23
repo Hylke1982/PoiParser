@@ -3,6 +3,7 @@ package nl.bstoi.poiparser.core.strategy.annotation;
 import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 import nl.bstoi.poiparser.api.strategy.annotations.Embedded;
 import nl.bstoi.poiparser.core.*;
+import nl.bstoi.poiparser.core.exception.ReadPoiParserException;
 import nl.bstoi.poiparser.core.strategy.AbstractPoiFileParser;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;

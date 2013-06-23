@@ -1,5 +1,7 @@
 package nl.bstoi.poiparser.core;
 
+import nl.bstoi.poiparser.core.exception.PoiParserException;
+
 public class RegexReadPoiParserException extends PoiParserException {
 	
 	/**

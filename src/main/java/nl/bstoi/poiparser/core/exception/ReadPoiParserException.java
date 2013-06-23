@@ -1,6 +1,8 @@
-package nl.bstoi.poiparser.core;
+package nl.bstoi.poiparser.core.exception;
 
-public class ReadPoiParserException extends PoiParserException{
+import nl.bstoi.poiparser.core.exception.PoiParserException;
+
+public class ReadPoiParserException extends PoiParserException {
 	
 	private static final String message = "Unable to read row %1$d at column %2$d";
 

@@ -1,5 +1,7 @@
 package nl.bstoi.poiparser.core;
 
+import nl.bstoi.poiparser.core.exception.PoiParserException;
+
 public class WritePoiParserException extends PoiParserException {
 
 	/**

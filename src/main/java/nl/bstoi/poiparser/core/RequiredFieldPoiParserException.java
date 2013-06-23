@@ -1,6 +1,8 @@
 package nl.bstoi.poiparser.core;
 
-public class RequiredFieldPoiParserException extends PoiParserException{
+import nl.bstoi.poiparser.core.exception.PoiParserException;
+
+public class RequiredFieldPoiParserException extends PoiParserException {
 	
 	/**
 	 * SERIAL VERSION ID.

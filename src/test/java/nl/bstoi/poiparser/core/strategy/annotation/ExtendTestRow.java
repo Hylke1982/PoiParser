@@ -4,7 +4,7 @@ import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 
 public class ExtendTestRow extends TestRow{
 	
-	@Cell(columnNumber=2)
+	@Cell(columnNumber=27)
 	private Short year;
 
 	public Short getYear() {
