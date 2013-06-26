@@ -2,16 +2,15 @@ package nl.bstoi.poiparser.core.strategy;
 
 import nl.bstoi.poiparser.api.strategy.converter.Converter;
 import nl.bstoi.poiparser.core.exception.PoiParserException;
-import nl.bstoi.poiparser.core.exception.ReadPoiParserException;
 import nl.bstoi.poiparser.core.RequiredFieldPoiParserException;
 import nl.bstoi.poiparser.core.strategy.factory.DefaultConverterFactory;
+import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.*;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -32,7 +31,7 @@ public abstract class AbstractPoiParser<T> {
     private final Set<CellDescriptor> cellDescriptors;
     private final Sheet sheet;
     private final boolean ignoreEmptyRows = true;
-    private boolean ignoreFirstRow = true;
+    private boolean ignoreFirstRow = false;
     private final DefaultConverterFactory DEFAULTCONVERTERFACTORY = new DefaultConverterFactory();
     private DefaultConverterFactory converterFactory = DEFAULTCONVERTERFACTORY;
 
@@ -53,7 +52,7 @@ public abstract class AbstractPoiParser<T> {
     protected List<T> readSheet() throws PoiParserException {
         try {
             List<T> dimensionList = new ArrayList<T>();
-            if (null != sheet) {
+            if (null != getSheet()) {
                 Iterator<Row> rowIterator = sheet.rowIterator();
                 if (rowIterator.hasNext()) {
                     // Skip first row
@@ -118,7 +117,7 @@ public abstract class AbstractPoiParser<T> {
         return false;
     }
 
-    protected T readRow(String sheetName, Row row, T rowDimension) throws RequiredFieldPoiParserException, ReadPoiParserException {
+    protected T readRow(String sheetName, Row row, T rowDimension) throws PoiParserException {
         if (null != row) {
             log.debug("Read row with number: " + row.getRowNum());
             for (CellDescriptor cellDescriptor : getCellDescriptors()) {
@@ -128,10 +127,9 @@ public abstract class AbstractPoiParser<T> {
         return rowDimension;
     }
 
-    protected void readField(String sheetName, Row row, T rowDimension, CellDescriptor cellDescriptor) throws RequiredFieldPoiParserException, ReadPoiParserException {
+    protected void readField(String sheetName, Row row, T rowDimension, CellDescriptor cellDescriptor) throws PoiParserException {
+
         try {
-
-
             if (cellDescriptor.isReadIgnore()) {
                 return; // When field must be ignored when reading then do nothing.
             }
@@ -140,7 +138,11 @@ public abstract class AbstractPoiParser<T> {
                 log.trace("Reading field " + cellDescriptor.getFieldName() + " on row " + row.getRowNum() + " that is mapped on column " + cellDescriptor.getColumnNumber() + " with value: " + cell.toString());
                 Converter converter = converterFactory.getConverter(cellDescriptor.getType());
                 if (null != converter) {
-                    PropertyUtils.setNestedProperty(rowDimension, cellDescriptor.getFieldName(), converter.readCell(cell));
+                    try {
+                        populateDimensionAsField(rowDimension, cellDescriptor.getFieldName(), converter, cell);
+                    } catch (PoiParserException e) {
+                        populateDimensionAsProperty(rowDimension, cellDescriptor.getFieldName(), converter, cell);
+                    }
                 } else {
                     // Unsupported type
                 }
@@ -150,14 +152,67 @@ public abstract class AbstractPoiParser<T> {
                     throw new RequiredFieldPoiParserException(sheetName, row.getRowNum(), cellDescriptor.getColumnNumber());
                 }
             }
-        } catch (IllegalAccessException e) {
-            throw new ReadPoiParserException(row.getRowNum(), cellDescriptor.getColumnNumber(), e);
-        } catch (InvocationTargetException e) {
-            throw new ReadPoiParserException(row.getRowNum(), cellDescriptor.getColumnNumber(), e);
-        } catch (NoSuchMethodException e) {
-            throw new ReadPoiParserException(row.getRowNum(), cellDescriptor.getColumnNumber(), e);
+        } catch (PoiParserException e) {
+            throw e;
         } catch (InstantiationException e) {
-            throw new ReadPoiParserException(row.getRowNum(), cellDescriptor.getColumnNumber(), e);
+            throw new PoiParserException("Error while setting field/property", e);
+        } catch (IllegalAccessException e) {
+            throw new PoiParserException("Error while setting field/property", e);
+        }
+    }
+
+    private void populateDimensionAsField(T rowDimension, String fieldName, Converter<T> converter, Cell cell) throws PoiParserException {
+        try {
+            rowDimension.getClass().getDeclaredField(fieldName).setAccessible(true);
+            Field field = rowDimension.getClass().getDeclaredField(fieldName);
+            field.setAccessible(true);
+            field.set(rowDimension, converter.readCell(cell));
+            field.setAccessible(false);
+        } catch (IllegalAccessException e) {
+            throw new PoiParserException("Unable set field " + fieldName, e);
+        } catch (NoSuchFieldException e) {
+            throw new PoiParserException("Unable set field " + fieldName, e);
+        }
+    }
+
+    private void populateDimensionAsProperty(T rowDimension, String propertyName, Converter<T> converter, Cell cell) throws PoiParserException {
+        try {
+            createRequiredUnderlyingInstancesForNestedProperties(rowDimension, propertyName);
+            PropertyUtils.setNestedProperty(rowDimension, propertyName, converter.readCell(cell));
+        } catch (IllegalAccessException e) {
+            throw new PoiParserException("Unable set property " + propertyName, e);
+        } catch (InvocationTargetException e) {
+            throw new PoiParserException("Unable set property " + propertyName, e);
+        } catch (NoSuchMethodException e) {
+            throw new PoiParserException("Unable set property " + propertyName, e);
+        }
+    }
+
+    private void createRequiredUnderlyingInstancesForNestedProperties(T rowDimension, String fieldName) {
+        String concatName = null;
+        String[] propertyNames = fieldName.split("\\.");
+        for (String createdInstanceName : propertyNames) {
+            if (fieldName.endsWith(createdInstanceName)) return;
+            if (null == concatName) {
+                concatName = createdInstanceName;
+            } else {
+                concatName += "." + createdInstanceName;
+            }
+            try {
+                if (null == PropertyUtils.getProperty(rowDimension, concatName)) {
+                    Object x = PropertyUtils.getPropertyDescriptor(rowDimension, concatName).getPropertyType().newInstance();
+                    PropertyUtils.setNestedProperty(rowDimension, concatName, x);
+
+                }
+            } catch (IllegalAccessException e) {
+                log.trace("Error creating underlying instance", e);
+            } catch (InvocationTargetException e) {
+                log.trace("Error creating underlying instance", e);
+            } catch (NoSuchMethodException e) {
+                log.trace("Error creating underlying instance", e);
+            } catch (InstantiationException e) {
+                log.trace("Error creating underlying instance", e);
+            }
         }
     }
 
