@@ -33,11 +33,11 @@ public class AnnotatedPoiParser<T> extends AbstractPoiParser implements ReadPoiP
     }
 
     public List<T> read(int startRow) throws PoiParserException {
-        return read(startRow);
+        return readSheet(startRow,getSheet().getLastRowNum());
     }
 
     public List<T> read(int startRow, int endRow) throws PoiParserException {
-        return read(startRow, endRow);
+        return readSheet(startRow, endRow);
     }
 
 

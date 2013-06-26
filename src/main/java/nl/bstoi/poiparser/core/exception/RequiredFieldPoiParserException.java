@@ -1,4 +1,4 @@
-package nl.bstoi.poiparser.core;
+package nl.bstoi.poiparser.core.exception;
 
 import nl.bstoi.poiparser.core.exception.PoiParserException;
 

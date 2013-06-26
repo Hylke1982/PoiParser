@@ -1,4 +1,4 @@
-package nl.bstoi.poiparser.core.strategy.annotation;
+package nl.bstoi.poiparser.core.strategy.annotation.structures;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

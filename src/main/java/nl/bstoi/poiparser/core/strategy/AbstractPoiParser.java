@@ -2,9 +2,8 @@ package nl.bstoi.poiparser.core.strategy;
 
 import nl.bstoi.poiparser.api.strategy.converter.Converter;
 import nl.bstoi.poiparser.core.exception.PoiParserException;
-import nl.bstoi.poiparser.core.RequiredFieldPoiParserException;
+import nl.bstoi.poiparser.core.exception.RequiredFieldPoiParserException;
 import nl.bstoi.poiparser.core.strategy.factory.DefaultConverterFactory;
-import org.apache.commons.beanutils.NestedNullException;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

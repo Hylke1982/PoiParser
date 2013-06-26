@@ -1,14 +1,21 @@
 package nl.bstoi.poiparser.core.strategy.annotation;
 
 import nl.bstoi.poiparser.core.TestHelper;
+import nl.bstoi.poiparser.core.exception.PoiParserException;
 import nl.bstoi.poiparser.core.exception.PoiParserRuntimeException;
 import nl.bstoi.poiparser.core.matcher.CellDescriptorMatcher;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.DuplicateColumnTestRow;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.EmbeddedTestRow;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.ExtendTestRow;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.TestRow;
 import org.hamcrest.Matchers;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -22,10 +29,8 @@ import java.util.Set;
  */
 public class AnnotatedPoiParserFactoryTest {
 
+    private static final String filePath = "/excel/";
 
-    public void testCreate() throws Exception {
-
-    }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateWithNullInputStream() throws Exception {
@@ -45,7 +50,7 @@ public class AnnotatedPoiParserFactoryTest {
         AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
         Set<CellDescriptor> cellDescriptors = testRowAnnotatedPoiParserFactory.getCellDescriptors();
         Assert.assertNotNull("Expect cell descriptor not to be null", cellDescriptors);
-//        Assert.assertEquals("Expected 9 cell descriptor elements", 9, cellDescriptors.size());
+        Assert.assertEquals("Expected 9 cell descriptor elements", 9, cellDescriptors.size());
         Assert.assertThat(cellDescriptors, Matchers.hasItem(TestHelper.createCellDescriptorMatcher("id", 0, Long.class, true, false, false, false, null)));
         Assert.assertThat(cellDescriptors, Matchers.hasItem(TestHelper.createCellDescriptorMatcher("name", 1, String.class, false, false, false, false, null)));
         Assert.assertThat(cellDescriptors, Matchers.hasItem(TestHelper.createCellDescriptorMatcher("methodField", 2, String.class, false, false, false, false, null)));
@@ -105,6 +110,14 @@ public class AnnotatedPoiParserFactoryTest {
     public void testGetCellDescriptorsWithDuplicateColumn() {
         AnnotatedPoiParserFactory<DuplicateColumnTestRow> duplicateColumnTestRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<DuplicateColumnTestRow>(DuplicateColumnTestRow.class);
         Set<CellDescriptor> cellDescriptors = duplicateColumnTestRowAnnotatedPoiParserFactory.getCellDescriptors();
+    }
+
+    @Test(expected = PoiParserException.class)
+    public void testCreateWithNoExcelFile() throws Exception {
+        AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
+        final String fileName = "not-a-excel-file.txt";
+        final File excelFile = new File(AnnotatedPoiParserFactory.class.getResource(filePath + fileName).toURI());
+        testRowAnnotatedPoiParserFactory.createReadPoiParser(new FileInputStream(excelFile), "Sheet2");
     }
 
 

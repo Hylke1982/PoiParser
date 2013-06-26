@@ -1,4 +1,4 @@
-package nl.bstoi.poiparser.core.strategy.annotation;
+package nl.bstoi.poiparser.core.strategy.annotation.structures;
 
 import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 import nl.bstoi.poiparser.api.strategy.annotations.Embedded;

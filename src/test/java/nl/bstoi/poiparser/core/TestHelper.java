@@ -4,7 +4,6 @@ import nl.bstoi.poiparser.core.matcher.CellDescriptorMatcher;
 import nl.bstoi.poiparser.core.matcher.EmbeddedTestRowMatcher;
 import nl.bstoi.poiparser.core.matcher.TestRowMatcher;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
-import nl.bstoi.poiparser.core.strategy.annotation.TestRow;
 
 import java.math.BigDecimal;
 

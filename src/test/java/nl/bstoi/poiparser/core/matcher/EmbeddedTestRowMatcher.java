@@ -1,7 +1,7 @@
 package nl.bstoi.poiparser.core.matcher;
 
 import nl.bstoi.poiparser.core.TestHelper;
-import nl.bstoi.poiparser.core.strategy.annotation.EmbeddedTestRow;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.EmbeddedTestRow;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
