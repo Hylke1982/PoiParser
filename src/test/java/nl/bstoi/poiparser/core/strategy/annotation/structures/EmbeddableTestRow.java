@@ -5,8 +5,8 @@ import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 import java.math.BigDecimal;
 
 /**
- * User: Hylke Stapersma
- * E-mail:[ hylke.stapersma@codecentric.nl]
+ * Hylke Stapersma
+ * hylke.stapersma@gmail.com
  * Date: 18-06-13
  * Time: 20:03
  */

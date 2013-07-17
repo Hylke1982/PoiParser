@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 
 /**
  * User: Hylke Stapersma
- * E-mail:[ hylke.stapersma@codecentric.nl]
+ * E-mail:[ hylke.stapersma@gmail.com]
  * Date: 18-06-13
  * Time: 20:00
  */

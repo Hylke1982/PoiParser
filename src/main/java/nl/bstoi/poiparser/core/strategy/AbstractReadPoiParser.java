@@ -22,9 +22,9 @@ import java.util.Set;
  * Date: 23-06-13
  * Time: 21:42
  */
-public abstract class AbstractPoiParser<T> {
+public abstract class AbstractReadPoiParser<T> {
 
-    private final static Log log = LogFactory.getLog(AbstractPoiParser.class);
+    private final static Log log = LogFactory.getLog(AbstractReadPoiParser.class);
 
     private final Class<T> clazz;
     private final Set<CellDescriptor> cellDescriptors;
@@ -35,7 +35,7 @@ public abstract class AbstractPoiParser<T> {
     private DefaultConverterFactory converterFactory = DEFAULTCONVERTERFACTORY;
 
 
-    public AbstractPoiParser(Set<CellDescriptor> cellDescriptors, final Sheet sheet, final Class<T> clazz) {
+    public AbstractReadPoiParser(Set<CellDescriptor> cellDescriptors, final Sheet sheet, final Class<T> clazz) {
         if (null == cellDescriptors) throw new IllegalArgumentException("Cell descriptors cannot be null");
         if (null == sheet) throw new IllegalArgumentException("Sheet cannot be null");
         if (null == clazz) throw new IllegalArgumentException("Clazz cannot be null");

@@ -2,63 +2,44 @@ package nl.bstoi.poiparser.core.strategy.annotation;
 
 import nl.bstoi.poiparser.api.strategy.annotations.Cell;
 import nl.bstoi.poiparser.api.strategy.annotations.Embedded;
-import nl.bstoi.poiparser.core.exception.PoiParserException;
 import nl.bstoi.poiparser.core.exception.PoiParserRuntimeException;
-import nl.bstoi.poiparser.core.strategy.AbstractPoiParserFactory;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
-import nl.bstoi.poiparser.core.strategy.ReadPoiParser;
-import nl.bstoi.poiparser.core.strategy.PoiParserFactory;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
-import org.omg.CosNaming.NameHelper;
 
 import java.beans.PropertyDescriptor;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * User: Hylke Stapersma
- * E-mail:[ hylke.stapersma@gmail.com]
- * Date: 23-06-13
- * Time: 13:17
+ * Hylke Stapersma
+ * hylke.stapersma@gmail.com
  */
-public class AnnotatedPoiParserFactory<T> extends AbstractPoiParserFactory implements PoiParserFactory<T> {
+public class AnnotatedClassDescriber {
 
     private final static String[] DEFAULT_IGNORED_PROPERTYNAMES = {"class"};
-
-    private Set<CellDescriptor> overrideCellDescriptors;
     private String[] ignorePropertyName = DEFAULT_IGNORED_PROPERTYNAMES;
 
 
-    private final Class<T> clazz;
+    private static AnnotatedClassDescriber instance;
 
+    private AnnotatedClassDescriber() {
 
-    public AnnotatedPoiParserFactory(Class<T> clazz) {
-        this.clazz = clazz;
     }
 
-    public ReadPoiParser<T> createReadPoiParser(InputStream excelInputStream, String sheetName) throws PoiParserException {
-        if (null == excelInputStream) throw new IllegalArgumentException("Excel input stream cannot be null");
-        if (StringUtils.isEmpty(sheetName)) throw new IllegalArgumentException("Sheet name cannot be empty");
-        return new AnnotatedPoiParser<T>(getCellDescriptors(), getSheetFromInputStream(excelInputStream, sheetName), clazz);
+    public static AnnotatedClassDescriber getInstance() {
+        if (null == instance) instance = new AnnotatedClassDescriber();
+        return instance;
+
     }
 
-    /**
-     * Get active cell descriptors
-     *
-     * @return
-     */
-    public Set<CellDescriptor> getCellDescriptors() {
-        if (null == this.overrideCellDescriptors) {
-            return getCellDescriptorsForClass(null, clazz);
-        }
-        return this.overrideCellDescriptors;
+    public Set<CellDescriptor> getCellDescriptorsForClass(Class clazz){
+        return getCellDescriptorsForClass(null,clazz);
     }
+
 
     private Set<CellDescriptor> getCellDescriptorsForClass(String propertyName, Class clazz) {
         Set<CellDescriptor> cellDescriptors = new HashSet<CellDescriptor>();
@@ -177,9 +158,5 @@ public class AnnotatedPoiParserFactory<T> extends AbstractPoiParserFactory imple
             return true;
         }
         throw new PoiParserRuntimeException("Declaring class cannot be the same as the field type (recursion is not supported)");
-    }
-
-    public void setOverrideCellDescriptors(Set<CellDescriptor> overrideCellDescriptors) {
-        this.overrideCellDescriptors = overrideCellDescriptors;
     }
 }

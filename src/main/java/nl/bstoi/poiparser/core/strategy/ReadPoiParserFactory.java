@@ -11,7 +11,7 @@ import java.util.Set;
  * Date: 23-06-13
  * Time: 13:19
  */
-public interface PoiParserFactory<T> {
+public interface ReadPoiParserFactory<T> {
 
     ReadPoiParser<T> createReadPoiParser(InputStream excelInputStream, String sheetName) throws PoiParserException;
 

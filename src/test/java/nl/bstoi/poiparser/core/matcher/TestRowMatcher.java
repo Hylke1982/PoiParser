@@ -6,8 +6,8 @@ import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 
 /**
- * Hylke Stapersma (codecentric nl)
- * hylke.stapersma@codecentric.nl
+ * Hylke Stapersma
+ * hylke.stapersma@gmail.com
  */
 public class TestRowMatcher extends BaseMatcher<TestRow> {
 

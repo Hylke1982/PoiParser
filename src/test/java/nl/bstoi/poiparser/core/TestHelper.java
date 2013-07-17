@@ -4,6 +4,7 @@ import nl.bstoi.poiparser.core.matcher.CellDescriptorMatcher;
 import nl.bstoi.poiparser.core.matcher.EmbeddedTestRowMatcher;
 import nl.bstoi.poiparser.core.matcher.TestRowMatcher;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.TestRow;
 
 import java.math.BigDecimal;
 
@@ -45,5 +46,13 @@ public class TestHelper {
             return o1.equals(o2);
         }
         return false;
+    }
+
+    public static TestRow createTestRow(Long id, String name, String methodField) {
+        final TestRow testRow = new TestRow();
+        testRow.setId(id);
+        testRow.setName(name);
+        testRow.setMethodField(methodField);
+        return testRow;
     }
 }

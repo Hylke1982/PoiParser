@@ -27,27 +27,27 @@ import java.util.Set;
  * Date: 23-06-13
  * Time: 13:32
  */
-public class AnnotatedPoiParserFactoryTest {
+public class AnnotatedReadPoiParserFactoryTest {
 
     private static final String filePath = "/excel/";
 
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateWithNullInputStream() throws Exception {
-        AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
+        AnnotatedReadPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<TestRow>(TestRow.class);
         testRowAnnotatedPoiParserFactory.createReadPoiParser(null, "sheet");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCreateWithNullSheetName() throws Exception {
-        AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
+        AnnotatedReadPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<TestRow>(TestRow.class);
         InputStream is = Mockito.mock(InputStream.class);
         testRowAnnotatedPoiParserFactory.createReadPoiParser(is, null);
     }
 
     @Test
     public void testGetCellDescriptors() throws Exception {
-        AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
+        AnnotatedReadPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<TestRow>(TestRow.class);
         Set<CellDescriptor> cellDescriptors = testRowAnnotatedPoiParserFactory.getCellDescriptors();
         Assert.assertNotNull("Expect cell descriptor not to be null", cellDescriptors);
         Assert.assertEquals("Expected 9 cell descriptor elements", 9, cellDescriptors.size());
@@ -64,7 +64,7 @@ public class AnnotatedPoiParserFactoryTest {
 
     @Test
     public void testGetCellDescriptorsWithEmbedded() throws Exception {
-        AnnotatedPoiParserFactory<EmbeddedTestRow> embeddedTestRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<EmbeddedTestRow>(EmbeddedTestRow.class);
+        AnnotatedReadPoiParserFactory<EmbeddedTestRow> embeddedTestRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<EmbeddedTestRow>(EmbeddedTestRow.class);
         Set<CellDescriptor> cellDescriptors = embeddedTestRowAnnotatedPoiParserFactory.getCellDescriptors();
         Assert.assertNotNull("Expect cell descriptor not to be null", cellDescriptors);
         Assert.assertEquals("Expected 4 cell descriptor elements", 4, cellDescriptors.size());
@@ -76,7 +76,7 @@ public class AnnotatedPoiParserFactoryTest {
 
     @Test
     public void testGetCellDescriptorsWithExtended() throws Exception {
-        AnnotatedPoiParserFactory<ExtendTestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<ExtendTestRow>(ExtendTestRow.class);
+        AnnotatedReadPoiParserFactory<ExtendTestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<ExtendTestRow>(ExtendTestRow.class);
         Set<CellDescriptor> cellDescriptors = testRowAnnotatedPoiParserFactory.getCellDescriptors();
         Assert.assertNotNull("Expect cell descriptor not to be null", cellDescriptors);
         Assert.assertEquals("Expected 10 cell descriptor elements", 10, cellDescriptors.size());
@@ -98,7 +98,7 @@ public class AnnotatedPoiParserFactoryTest {
         CellDescriptor overrideCellDescriptor = TestHelper.createCellDescriptor("field1", 0, Short.class, false, false, false, false, null);
         CellDescriptorMatcher overrideCellDescriptorMatcher = new CellDescriptorMatcher(overrideCellDescriptor);
         overrideCellDescriptors.add(overrideCellDescriptor);
-        AnnotatedPoiParserFactory<EmbeddedTestRow> embeddedTestRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<EmbeddedTestRow>(EmbeddedTestRow.class);
+        AnnotatedReadPoiParserFactory<EmbeddedTestRow> embeddedTestRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<EmbeddedTestRow>(EmbeddedTestRow.class);
         embeddedTestRowAnnotatedPoiParserFactory.setOverrideCellDescriptors(overrideCellDescriptors);
         Set<CellDescriptor> cellDescriptors = embeddedTestRowAnnotatedPoiParserFactory.getCellDescriptors();
         Assert.assertNotNull("Expect cell descriptor not to be null", cellDescriptors);
@@ -108,15 +108,15 @@ public class AnnotatedPoiParserFactoryTest {
 
     @Test(expected = PoiParserRuntimeException.class)
     public void testGetCellDescriptorsWithDuplicateColumn() {
-        AnnotatedPoiParserFactory<DuplicateColumnTestRow> duplicateColumnTestRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<DuplicateColumnTestRow>(DuplicateColumnTestRow.class);
+        AnnotatedReadPoiParserFactory<DuplicateColumnTestRow> duplicateColumnTestRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<DuplicateColumnTestRow>(DuplicateColumnTestRow.class);
         Set<CellDescriptor> cellDescriptors = duplicateColumnTestRowAnnotatedPoiParserFactory.getCellDescriptors();
     }
 
     @Test(expected = PoiParserException.class)
     public void testCreateWithNoExcelFile() throws Exception {
-        AnnotatedPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedPoiParserFactory<TestRow>(TestRow.class);
+        AnnotatedReadPoiParserFactory<TestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<TestRow>(TestRow.class);
         final String fileName = "not-a-excel-file.txt";
-        final File excelFile = new File(AnnotatedPoiParserFactory.class.getResource(filePath + fileName).toURI());
+        final File excelFile = new File(AnnotatedReadPoiParserFactory.class.getResource(filePath + fileName).toURI());
         testRowAnnotatedPoiParserFactory.createReadPoiParser(new FileInputStream(excelFile), "Sheet2");
     }
 

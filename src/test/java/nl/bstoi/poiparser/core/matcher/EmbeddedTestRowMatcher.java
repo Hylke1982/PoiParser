@@ -8,8 +8,8 @@ import org.hamcrest.Description;
 import java.math.BigDecimal;
 
 /**
- * Hylke Stapersma (codecentric nl)
- * hylke.stapersma@codecentric.nl
+ * Hylke Stapersma
+ * hylke.stapersma@gmail.com
  */
 public class EmbeddedTestRowMatcher extends BaseMatcher<EmbeddedTestRow> {
 

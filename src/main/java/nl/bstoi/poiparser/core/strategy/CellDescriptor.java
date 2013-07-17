@@ -1,8 +1,8 @@
 package nl.bstoi.poiparser.core.strategy;
 
 /**
- * User: Hylke Stapersma
- * E-mail:[ hylke.stapersma@codecentric.nl]
+ * Hylke Stapersma
+ * hylke.stapersma@gmail.com
  * Date: 23-06-13
  * Time: 12:48
  */
