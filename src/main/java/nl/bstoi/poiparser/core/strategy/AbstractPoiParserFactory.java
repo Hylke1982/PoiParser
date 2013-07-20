@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 /**
  * User: Hylke Stapersma
@@ -26,6 +27,9 @@ public abstract class AbstractPoiParserFactory {
     private final static Log log = LogFactory.getLog(AbstractPoiParserFactory.class);
 
     private PoiType poiType;
+    protected boolean createHeaderRow = false;
+    protected boolean ignoreFirstRow = false;
+    protected Properties columnHeaderProperties;
 
     protected Sheet getSheetFromInputStream(InputStream inputStream, String sheetName) throws PoiParserException {
 
@@ -67,7 +71,17 @@ public abstract class AbstractPoiParserFactory {
         return poiType;
     }
 
-    public void setPoiType(PoiType poiType) {
-        this.poiType = poiType;
+
+    public void setCreateHeaderRow(boolean createHeaderRow) {
+        this.createHeaderRow = createHeaderRow;
     }
+
+    public void setIgnoreFirstRow(boolean ignoreFirstRow) {
+        this.ignoreFirstRow = ignoreFirstRow;
+    }
+
+    public void setColumnHeaderProperties(Properties columnHeaderProperties) {
+        this.columnHeaderProperties = columnHeaderProperties;
+    }
+
 }

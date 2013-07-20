@@ -31,7 +31,9 @@ public class AnnotatedReadPoiParserFactory<T> extends AbstractPoiParserFactory i
     public ReadPoiParser<T> createReadPoiParser(InputStream excelInputStream, String sheetName) throws PoiParserException {
         if (null == excelInputStream) throw new IllegalArgumentException("Excel input stream cannot be null");
         if (StringUtils.isEmpty(sheetName)) throw new IllegalArgumentException("Sheet name cannot be empty");
-        return new AnnotatedReadPoiParser<T>(getCellDescriptors(), getSheetFromInputStream(excelInputStream, sheetName), clazz);
+        AnnotatedReadPoiParser<T> annotatedReadPoiParser = new AnnotatedReadPoiParser<T>(getCellDescriptors(), getSheetFromInputStream(excelInputStream, sheetName), clazz);
+        annotatedReadPoiParser.setIgnoreFirstRow(ignoreFirstRow);
+        return annotatedReadPoiParser;
     }
 
     /**

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 
@@ -20,13 +21,14 @@ import java.util.Set;
  * Hylke Stapersma
  * hylke.stapersma@gmail.com
  */
-public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
+public abstract class AbstractWritePoiParser {
     private final static Log log = LogFactory.getLog(AbstractWritePoiParser.class);
 
     private final DefaultConverterFactory DEFAULTCONVERTERFACTORY = new DefaultConverterFactory();
 
     private boolean createHeaderRow = false;
     private final Workbook workbook;
+    private ColumnHeaderProperties columnHeaderProperties;
 
     protected AbstractWritePoiParser(Workbook workbook) {
         this.workbook = workbook;
@@ -44,7 +46,29 @@ public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
     protected void writeHeaderRow(Sheet sheet, Set<CellDescriptor> sheetCellDescriptors) {
         if (sheet != null) {
             Row headerRow = sheet.createRow(0);
+            for (CellDescriptor sheetCellDescriptor : sheetCellDescriptors) {
+                writeHeaderCell(sheet.getSheetName(), headerRow, sheetCellDescriptor);
+            }
         }
+    }
+
+    protected void writeHeaderCell(final String sheetName, Row headerRow, CellDescriptor sheetCellDescriptor) {
+        try {
+            if (!sheetCellDescriptor.isWriteIgnore()) {
+                Cell cell = headerRow.createCell(sheetCellDescriptor.getColumnNumber());
+                String headerColumnName = sheetCellDescriptor.getFieldName();
+                if (hasColumnHeaderProperties() && getColumnHeaderProperties().containsColumnHeader(sheetName, headerColumnName)) {
+                    headerColumnName = getColumnHeaderProperties().getColumnHeader(sheetName, headerColumnName);
+                }
+                Converter converter = DEFAULTCONVERTERFACTORY.getConverter(String.class);
+                converter.writeCell(cell, headerColumnName);
+            }
+        } catch (InstantiationException e) {
+            log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
+        } catch (IllegalAccessException e) {
+            log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
+        }
+
     }
 
     protected void writeDataRows(Sheet sheet, TypedList<?> values, Set<CellDescriptor> sheetCellDescriptors) {
@@ -54,14 +78,12 @@ public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
                 writeDataRow(sheet, index, value, sheetCellDescriptors);
                 index++;
             }
-
         }
     }
 
     protected void writeDataRow(Sheet sheet, int index, Object value, Set<CellDescriptor> sheetCellDescriptors) {
         Row row = sheet.createRow(index);
         for (CellDescriptor cellDescriptor : sheetCellDescriptors) {
-            System.out.println("cd: "+cellDescriptor.getColumnNumber()+" cd: "+cellDescriptor.getFieldName());
             Object cellValue = readCellValueFromObjectProperty(value, cellDescriptor.getFieldName());
             writeDataCell(row, cellValue, cellDescriptor);
         }
@@ -74,9 +96,9 @@ public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
                 Converter converter = DEFAULTCONVERTERFACTORY.getConverter(cellDescriptor.getType());
                 converter.writeCell(cell, cellValue);
             } catch (InstantiationException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
             } catch (IllegalAccessException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
             }
         }
     }
@@ -91,10 +113,34 @@ public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
         } catch (InvocationTargetException e) {
             throw new PoiParserRuntimeException(String.format("Property %s cannot be read", propertyName), e);
         } catch (NoSuchMethodException e) {
-            // Try field access read here
-            //throw new PoiParserRuntimeException(String.format("Property %s cannot be read", propertyName), e);
+            return readCellValueFromObjectField(object, propertyName);
+        }
+    }
+
+    protected Object readCellValueFromObjectField(Object object, String fieldName) {
+        String[] splittedFieldNames = getSplittedPropertyName(fieldName);
+        Object returnObject = null;
+        for (String splittedFieldName : splittedFieldNames) {
+            returnObject = getFieldFromObject(object, splittedFieldName);
+            if (returnObject == null) {
+                return null;
+            }
+        }
+        return returnObject;
+    }
+
+    private Object getFieldFromObject(Object object, String fieldName) {
+        try {
+            Field field = object.getClass().getField(fieldName);
+            field.setAccessible(true);
+            return field.get(object);
+        } catch (NoSuchFieldException e) {
+
+        } catch (IllegalAccessException e) {
+
         }
         return null;
+
     }
 
     public boolean isCreateHeaderRow() {
@@ -107,5 +153,23 @@ public abstract class AbstractWritePoiParser extends AbstractPoiParserFactory {
 
     protected Workbook getWorkbook() {
         return workbook;
+    }
+
+
+    protected String[] getSplittedPropertyName(final String propertyName) {
+        if (StringUtils.isEmpty(propertyName)) throw new IllegalArgumentException("Property name cannot be empty");
+        return propertyName.split("\\.");
+    }
+
+    private ColumnHeaderProperties getColumnHeaderProperties() {
+        return this.columnHeaderProperties;
+    }
+
+    private boolean hasColumnHeaderProperties() {
+        return (null != this.columnHeaderProperties);
+    }
+
+    public void setColumnHeaderProperties(ColumnHeaderProperties columnHeaderProperties) {
+        this.columnHeaderProperties = columnHeaderProperties;
     }
 }

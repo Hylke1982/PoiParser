@@ -201,7 +201,6 @@ public abstract class AbstractReadPoiParser<T> {
                 if (null == PropertyUtils.getProperty(rowDimension, concatName)) {
                     Object x = PropertyUtils.getPropertyDescriptor(rowDimension, concatName).getPropertyType().newInstance();
                     PropertyUtils.setNestedProperty(rowDimension, concatName, x);
-
                 }
             } catch (IllegalAccessException e) {
                 log.trace("Error creating underlying instance", e);
@@ -217,5 +216,9 @@ public abstract class AbstractReadPoiParser<T> {
 
     public Sheet getSheet() {
         return sheet;
+    }
+
+    public void setIgnoreFirstRow(boolean ignoreFirstRow){
+        this.ignoreFirstRow = ignoreFirstRow;
     }
 }

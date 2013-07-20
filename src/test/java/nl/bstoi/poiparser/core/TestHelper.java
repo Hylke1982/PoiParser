@@ -4,6 +4,8 @@ import nl.bstoi.poiparser.core.matcher.CellDescriptorMatcher;
 import nl.bstoi.poiparser.core.matcher.EmbeddedTestRowMatcher;
 import nl.bstoi.poiparser.core.matcher.TestRowMatcher;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.EmbeddableTestRow;
+import nl.bstoi.poiparser.core.strategy.annotation.structures.EmbeddedTestRow;
 import nl.bstoi.poiparser.core.strategy.annotation.structures.TestRow;
 
 import java.math.BigDecimal;
@@ -48,11 +50,25 @@ public class TestHelper {
         return false;
     }
 
-    public static TestRow createTestRow(Long id, String name, String methodField) {
+    public static TestRow createTestRow(Long id, String name, String methodField, String fieldWithOnlySet) {
         final TestRow testRow = new TestRow();
         testRow.setId(id);
         testRow.setName(name);
         testRow.setMethodField(methodField);
+        testRow.setFieldWithOnlySet(fieldWithOnlySet);
         return testRow;
+    }
+
+    public static EmbeddedTestRow createEmbeddedTestRow(Short field1, Integer field2, Long field3, BigDecimal field4) {
+        final EmbeddedTestRow embeddedTestRow = new EmbeddedTestRow();
+        embeddedTestRow.setField1(field1);
+        embeddedTestRow.setField2(field2);
+        if (null != field3 && null != field4) {
+            EmbeddableTestRow embeddableTestRow = new EmbeddableTestRow();
+            embeddableTestRow.setField3(field3);
+            embeddableTestRow.setField4(field4);
+            embeddedTestRow.setEmbeddableTestRow(embeddableTestRow);
+        }
+        return embeddedTestRow;
     }
 }
