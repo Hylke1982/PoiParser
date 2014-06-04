@@ -11,31 +11,31 @@ public @interface Cell {
 	
 	/**
 	 * Column number
-	 * @return
+	 * @return column number
 	 */
 	int columnNumber();
 	
 	/**
 	 * If field is required
-	 * @return
+	 * @return  required
 	 */
 	boolean required() default false;
 	
 	/**
 	 * If field is ignored while reading
-	 * @return
+	 * @return  Ignore while reading
 	 */
 	boolean readIgnore() default false;
 	
 	/**
 	 * If field is ignored while writing
-	 * @return
+	 * @return  Ignore while writing
 	 */
 	boolean writeIgnore() default false;
 	
 	/**
 	 * Validation rule based on regular expression can only be used with String cell types
-	 * @return
+	 * @return  match rule based on regex
 	 */
 	String regex() default "";
 

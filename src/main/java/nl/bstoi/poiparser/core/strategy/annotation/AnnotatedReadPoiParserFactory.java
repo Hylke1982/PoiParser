@@ -39,7 +39,7 @@ public class AnnotatedReadPoiParserFactory<T> extends AbstractPoiParserFactory i
     /**
      * Get active cell descriptors
      *
-     * @return
+     * @return unique set of cell descriptions
      */
     public Set<CellDescriptor> getCellDescriptors() {
         if (null == this.overrideCellDescriptors) {

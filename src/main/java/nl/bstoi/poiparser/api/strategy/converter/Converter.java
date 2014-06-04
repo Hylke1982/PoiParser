@@ -7,24 +7,29 @@ import org.apache.poi.ss.usermodel.Cell;
  * 
  * @author Hylke Stapersma
  *
- * @param <T>
+ * @param <T> Type to convert into or convert from
  */
 public interface Converter<T> {
 
 	/**
-	 * Read a Cell and convert to <T>
-	 * @param cell
+	 * Read a Cell and convert to [T]
+	 * @param cell to read
 	 * @param regex regex validation
-	 * @return
+	 * @return a converted object [T] from a cell
 	 */
 	public T readCell(Cell cell, String regex);
-	
+
+    /**
+     * Read a Cell and convert to [T]
+     * @param cell to read
+     * @return a converted object [T] from a cell
+     */
 	public T readCell(Cell cell);
 	
 	/**
-	 * Write a <T> value to cell
-	 * @param cell
-	 * @param value
+	 * Write a [T] value to cell
+	 * @param cell to write
+	 * @param value value to convert to cell
 	 */
 	public void writeCell(Cell cell, T value);
 	

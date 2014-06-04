@@ -27,8 +27,8 @@ public class PoiImportExportUtil {
      * Get sheet name from excel file
      * </p>
      *
-     * @param excelFile
-     * @return
+     * @param excelFile excel file to read
+     * @return a list of sheet names
      */
     public static List<String> getSheetNames(final File excelFile) {
         try {
@@ -73,8 +73,8 @@ public class PoiImportExportUtil {
      * Get excel files from a certain path
      * </p>
      *
-     * @param path
-     * @return
+     * @param path list excel files on specific path
+     * @return list of file names on a path
      */
     public static List<String> readExcelFiles(String path) {
         log.debug("Listing excel files from path: " + path);
@@ -93,8 +93,8 @@ public class PoiImportExportUtil {
      * Get the file hash for a excel file
      * </p>
      *
-     * @param excelFile
-     * @return
+     * @param excelFile the excel to get a hash from
+     * @return the hash
      */
     public static String getFileHash(File excelFile) {
         try {
