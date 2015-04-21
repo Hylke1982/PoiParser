@@ -25,7 +25,7 @@ public class AnnotatedWritePoiParser extends AbstractWritePoiParser implements W
         this.outputStream = outputStream;
     }
 
-    public void write(Map<String, TypedList<?>> sheetDataset) throws PoiParserException {
+    public void write(final Map<String, TypedList<?>> sheetDataset) throws PoiParserException {
         if (null == sheetDataset) throw new IllegalArgumentException("Sheet dataset name cannot be null");
         try {
             for (String sheetName : sheetDataset.keySet()) {
@@ -39,7 +39,7 @@ public class AnnotatedWritePoiParser extends AbstractWritePoiParser implements W
         }
     }
 
-    private Set<CellDescriptor> getCellDescriptorsForGenericList(TypedList<?> list) {
+    private Set<CellDescriptor> getCellDescriptorsForGenericList(final TypedList<?> list) {
         AnnotatedClassDescriber annotatedClassDescriber = AnnotatedClassDescriber.getInstance();
         Set<CellDescriptor> cellDescriptors = annotatedClassDescriber.getCellDescriptorsForClass(list.getType());
         return cellDescriptors;

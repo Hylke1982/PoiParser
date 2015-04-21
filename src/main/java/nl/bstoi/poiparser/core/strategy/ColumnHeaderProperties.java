@@ -21,7 +21,7 @@ public class ColumnHeaderProperties {
         properties.setProperty(getColumnHeaderKey(sheetName, propertyName), value);
     }
 
-    private String getColumnHeaderKey(String sheetName, String propertyName) {
+    private String getColumnHeaderKey(final String sheetName, final String propertyName) {
         return sheetName + DOT + propertyName;
     }
 

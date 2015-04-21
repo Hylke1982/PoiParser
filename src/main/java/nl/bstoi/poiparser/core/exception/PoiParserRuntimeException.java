@@ -8,19 +8,19 @@ package nl.bstoi.poiparser.core.exception;
  */
 public class PoiParserRuntimeException extends RuntimeException {
 
-    public PoiParserRuntimeException(String message) {
+    public PoiParserRuntimeException(final String message) {
         super(message);
     }
 
-    public PoiParserRuntimeException(String message, Throwable cause) {
+    public PoiParserRuntimeException(final String message,final Throwable cause) {
         super(message, cause);
     }
 
-    public PoiParserRuntimeException(Throwable cause) {
+    public PoiParserRuntimeException(final Throwable cause) {
         super(cause);
     }
 
-    protected PoiParserRuntimeException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected PoiParserRuntimeException(final String message,final Throwable cause,final boolean enableSuppression,final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

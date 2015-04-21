@@ -34,7 +34,7 @@ public abstract class AbstractWritePoiParser {
         this.workbook = workbook;
     }
 
-    protected void writeSheet(String sheetName, TypedList<?> values, Set<CellDescriptor> sheetCellDescriptors) {
+    protected void writeSheet(final String sheetName, final TypedList<?> values, final Set<CellDescriptor> sheetCellDescriptors) {
         Sheet sheet = workbook.createSheet(sheetName);
         if (isCreateHeaderRow()) {
             writeHeaderRow(sheet, sheetCellDescriptors);
@@ -43,7 +43,7 @@ public abstract class AbstractWritePoiParser {
 
     }
 
-    protected void writeHeaderRow(Sheet sheet, Set<CellDescriptor> sheetCellDescriptors) {
+    protected void writeHeaderRow(final Sheet sheet, final Set<CellDescriptor> sheetCellDescriptors) {
         if (sheet != null) {
             Row headerRow = sheet.createRow(0);
             for (CellDescriptor sheetCellDescriptor : sheetCellDescriptors) {
@@ -52,7 +52,7 @@ public abstract class AbstractWritePoiParser {
         }
     }
 
-    protected void writeHeaderCell(final String sheetName, Row headerRow, CellDescriptor sheetCellDescriptor) {
+    protected void writeHeaderCell(final String sheetName, final Row headerRow, final CellDescriptor sheetCellDescriptor) {
         try {
             if (!sheetCellDescriptor.isWriteIgnore()) {
                 Cell cell = headerRow.createCell(sheetCellDescriptor.getColumnNumber());
@@ -63,15 +63,15 @@ public abstract class AbstractWritePoiParser {
                 Converter converter = DEFAULTCONVERTERFACTORY.getConverter(String.class);
                 converter.writeCell(cell, headerColumnName);
             }
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
         }
 
     }
 
-    protected void writeDataRows(Sheet sheet, TypedList<?> values, Set<CellDescriptor> sheetCellDescriptors) {
+    protected void writeDataRows(final Sheet sheet, final TypedList<?> values, final Set<CellDescriptor> sheetCellDescriptors) {
         if (null != sheet) {
             int index = isCreateHeaderRow() ? 1 : 0;
             for (Object value : values) {
@@ -81,7 +81,7 @@ public abstract class AbstractWritePoiParser {
         }
     }
 
-    protected void writeDataRow(Sheet sheet, int index, Object value, Set<CellDescriptor> sheetCellDescriptors) {
+    protected void writeDataRow(final Sheet sheet, final int index, final Object value, final Set<CellDescriptor> sheetCellDescriptors) {
         Row row = sheet.createRow(index);
         for (CellDescriptor cellDescriptor : sheetCellDescriptors) {
             Object cellValue = readCellValueFromObjectProperty(value, cellDescriptor.getFieldName());
@@ -89,38 +89,38 @@ public abstract class AbstractWritePoiParser {
         }
     }
 
-    protected void writeDataCell(Row row, Object cellValue, CellDescriptor cellDescriptor) {
+    protected void writeDataCell(final Row row, final Object cellValue, final CellDescriptor cellDescriptor) {
         Cell cell = row.createCell(cellDescriptor.getColumnNumber());
         if (!cellDescriptor.isWriteIgnore()) {
             try {
                 Converter converter = DEFAULTCONVERTERFACTORY.getConverter(cellDescriptor.getType());
                 converter.writeCell(cell, cellValue);
-            } catch (InstantiationException e) {
+            } catch (final InstantiationException e) {
                 log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
             }
         }
     }
 
-    protected Object readCellValueFromObjectProperty(Object object, String propertyName) {
+    protected Object readCellValueFromObjectProperty(final Object object, final String propertyName) {
         if (null == object) throw new IllegalArgumentException("Object cannot be null");
         if (StringUtils.isEmpty(propertyName)) throw new IllegalArgumentException("Property name cannot be null");
         try {
             return PropertyUtils.getNestedProperty(object, propertyName);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new PoiParserRuntimeException(String.format("Property %s cannot be read", propertyName), e);
-        } catch (InvocationTargetException e) {
+        } catch (final InvocationTargetException e) {
             throw new PoiParserRuntimeException(String.format("Property %s cannot be read", propertyName), e);
-        } catch (NoSuchMethodException e) {
+        } catch (final NoSuchMethodException e) {
             return readCellValueFromObjectField(object, propertyName);
         }
     }
 
-    protected Object readCellValueFromObjectField(Object object, String fieldName) {
-        String[] splittedFieldNames = getSplittedPropertyName(fieldName);
+    protected Object readCellValueFromObjectField(final Object object,final String fieldName) {
+        final String[] splittedFieldNames = getSplittedPropertyName(fieldName);
         Object returnObject = null;
-        for (String splittedFieldName : splittedFieldNames) {
+        for (final String splittedFieldName : splittedFieldNames) {
             returnObject = getFieldFromObject(object, splittedFieldName);
             if (returnObject == null) {
                 return null;
@@ -129,15 +129,15 @@ public abstract class AbstractWritePoiParser {
         return returnObject;
     }
 
-    private Object getFieldFromObject(Object object, String fieldName) {
+    private Object getFieldFromObject(final Object object,final String fieldName) {
         try {
-            Field field = object.getClass().getField(fieldName);
+            final Field field = object.getClass().getField(fieldName);
             field.setAccessible(true);
             return field.get(object);
-        } catch (NoSuchFieldException e) {
-
-        } catch (IllegalAccessException e) {
-
+        } catch (final NoSuchFieldException e) {
+            // Do nothing
+        } catch (final IllegalAccessException e) {
+            // Do nothing
         }
         return null;
 

@@ -15,8 +15,8 @@ public interface ReadPoiParser<T> {
 
     public List<T> read() throws PoiParserException;
 
-    public List<T> read(int startRow) throws PoiParserException;
+    public List<T> read(final int startRow) throws PoiParserException;
 
-    public List<T> read(int startRow, int endRow) throws PoiParserException;
+    public List<T> read(final int startRow, final int endRow) throws PoiParserException;
 
 }

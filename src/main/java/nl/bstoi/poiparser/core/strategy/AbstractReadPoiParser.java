@@ -35,7 +35,7 @@ public abstract class AbstractReadPoiParser<T> {
     private DefaultConverterFactory converterFactory = DEFAULTCONVERTERFACTORY;
 
 
-    public AbstractReadPoiParser(Set<CellDescriptor> cellDescriptors, final Sheet sheet, final Class<T> clazz) {
+    public AbstractReadPoiParser(final Set<CellDescriptor> cellDescriptors, final Sheet sheet, final Class<T> clazz) {
         if (null == cellDescriptors) throw new IllegalArgumentException("Cell descriptors cannot be null");
         if (null == sheet) throw new IllegalArgumentException("Sheet cannot be null");
         if (null == clazz) throw new IllegalArgumentException("Clazz cannot be null");
@@ -73,7 +73,7 @@ public abstract class AbstractReadPoiParser<T> {
         }
     }
 
-    protected List<T> readSheet(int startRow, int endRow) throws PoiParserException {
+    protected List<T> readSheet(final int startRow,final int endRow) throws PoiParserException {
         try {
             List<T> dimensionList = new ArrayList<T>();
             if (null != sheet) {
@@ -93,7 +93,7 @@ public abstract class AbstractReadPoiParser<T> {
         }
     }
 
-    public boolean ignoreRow(Row row) {
+    public boolean ignoreRow(final Row row) {
         if (isEmptyRow(row)) {
             return ignoreEmptyRows;
         }
@@ -101,22 +101,22 @@ public abstract class AbstractReadPoiParser<T> {
     }
 
 
-    public boolean isEmptyRow(Row row) {
+    public boolean isEmptyRow(final Row row) {
         if (null != row) {
-            for (CellDescriptor cellDescriptor : getCellDescriptors()) {
-                Integer columnNumber = cellDescriptor.getColumnNumber();
+            for (final CellDescriptor cellDescriptor : getCellDescriptors()) {
+                final Integer columnNumber = cellDescriptor.getColumnNumber();
                 if (!isEmptyValue(row.getCell(columnNumber, Row.RETURN_BLANK_AS_NULL))) return false;
             }
         }
         return true;
     }
 
-    public boolean isEmptyValue(Cell cell) {
+    public boolean isEmptyValue(final Cell cell) {
         if (null == cell) return true;
         return false;
     }
 
-    protected T readRow(String sheetName, Row row, T rowDimension) throws PoiParserException {
+    protected T readRow(final String sheetName, final Row row,final T rowDimension) throws PoiParserException {
         if (null != row) {
             log.debug("Read row with number: " + row.getRowNum());
             for (CellDescriptor cellDescriptor : getCellDescriptors()) {
@@ -126,7 +126,7 @@ public abstract class AbstractReadPoiParser<T> {
         return rowDimension;
     }
 
-    protected void readField(String sheetName, Row row, T rowDimension, CellDescriptor cellDescriptor) throws PoiParserException {
+    protected void readField(final String sheetName,final Row row,final T rowDimension,final CellDescriptor cellDescriptor) throws PoiParserException {
 
         try {
             if (cellDescriptor.isReadIgnore()) {
@@ -151,16 +151,16 @@ public abstract class AbstractReadPoiParser<T> {
                     throw new RequiredFieldPoiParserException(sheetName, row.getRowNum(), cellDescriptor.getColumnNumber());
                 }
             }
-        } catch (PoiParserException e) {
+        } catch (final PoiParserException e) {
             throw e;
-        } catch (InstantiationException e) {
+        } catch (final InstantiationException e) {
             throw new PoiParserException("Error while setting field/property", e);
-        } catch (IllegalAccessException e) {
+        } catch (final IllegalAccessException e) {
             throw new PoiParserException("Error while setting field/property", e);
         }
     }
 
-    private void populateDimensionAsField(T rowDimension, String fieldName, Converter<T> converter, Cell cell) throws PoiParserException {
+    private void populateDimensionAsField(final T rowDimension,final String fieldName,final Converter<T> converter,final Cell cell) throws PoiParserException {
         try {
             rowDimension.getClass().getDeclaredField(fieldName).setAccessible(true);
             Field field = rowDimension.getClass().getDeclaredField(fieldName);
@@ -174,7 +174,7 @@ public abstract class AbstractReadPoiParser<T> {
         }
     }
 
-    private void populateDimensionAsProperty(T rowDimension, String propertyName, Converter<T> converter, Cell cell) throws PoiParserException {
+    private void populateDimensionAsProperty(final T rowDimension, final String propertyName,final Converter<T> converter, final Cell cell) throws PoiParserException {
         try {
             createRequiredUnderlyingInstancesForNestedProperties(rowDimension, propertyName);
             PropertyUtils.setNestedProperty(rowDimension, propertyName, converter.readCell(cell));
@@ -187,7 +187,7 @@ public abstract class AbstractReadPoiParser<T> {
         }
     }
 
-    private void createRequiredUnderlyingInstancesForNestedProperties(T rowDimension, String fieldName) {
+    private void createRequiredUnderlyingInstancesForNestedProperties(final T rowDimension,final String fieldName) {
         String concatName = null;
         String[] propertyNames = fieldName.split("\\.");
         for (String createdInstanceName : propertyNames) {
@@ -218,7 +218,7 @@ public abstract class AbstractReadPoiParser<T> {
         return sheet;
     }
 
-    public void setIgnoreFirstRow(boolean ignoreFirstRow){
+    public void setIgnoreFirstRow(final boolean ignoreFirstRow){
         this.ignoreFirstRow = ignoreFirstRow;
     }
 }

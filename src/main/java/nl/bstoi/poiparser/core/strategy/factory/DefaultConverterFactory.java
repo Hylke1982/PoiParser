@@ -29,11 +29,11 @@ public class DefaultConverterFactory {
 		registerConverter(Boolean.TYPE, BooleanConverter.class);
 	}
 	
-	public Converter<?> getConverter(Class<?> type) throws InstantiationException, IllegalAccessException{
+	public Converter<?> getConverter(final Class<?> type) throws InstantiationException, IllegalAccessException{
 		return typeConvertorMap.get(type).newInstance();
 	}
 	
-	public void registerConverter(Class<?> type,Class<? extends Converter<?>> converterType){
+	public void registerConverter(final Class<?> type,final Class<? extends Converter<?>> converterType){
 		typeConvertorMap.put(type, converterType);
 	}
 	

@@ -36,12 +36,12 @@ public class AnnotatedClassDescriber {
 
     }
 
-    public Set<CellDescriptor> getCellDescriptorsForClass(Class clazz){
-        return getCellDescriptorsForClass(null,clazz);
+    public Set<CellDescriptor> getCellDescriptorsForClass(final Class clazz) {
+        return getCellDescriptorsForClass(null, clazz);
     }
 
 
-    private Set<CellDescriptor> getCellDescriptorsForClass(String propertyName, Class clazz) {
+    private Set<CellDescriptor> getCellDescriptorsForClass(final String propertyName, final Class clazz) {
         Set<CellDescriptor> cellDescriptors = new HashSet<CellDescriptor>();
         if (clazz.getSuperclass() != Object.class) {
             // Check superclasses first
@@ -107,7 +107,7 @@ public class AnnotatedClassDescriber {
         }
     }
 
-    private CellDescriptor createCellDescriptor(String propertyName, Cell cell, Class type) {
+    private CellDescriptor createCellDescriptor(final String propertyName, final Cell cell, final Class type) {
         CellDescriptor cellDescriptor = new CellDescriptor(propertyName, cell.columnNumber(), type);
         cellDescriptor.setRequired(cell.required());
         cellDescriptor.setReadIgnore(cell.readIgnore());
@@ -116,32 +116,32 @@ public class AnnotatedClassDescriber {
         return cellDescriptor;
     }
 
-    private String getPropertyName(String propertyName, String fieldName) {
+    private String getPropertyName(final String propertyName, final String fieldName) {
         if (StringUtils.isEmpty(propertyName)) {
             return fieldName;
         }
         return propertyName + "." + fieldName;
     }
 
-    private boolean isNotIgnoredProperty(PropertyDescriptor propertyDescriptor) {
+    private boolean isNotIgnoredProperty(final PropertyDescriptor propertyDescriptor) {
         return !ArrayUtils.contains(ignorePropertyName, propertyDescriptor.getDisplayName());
     }
 
-    private boolean isEmbeddedField(Field field) {
+    private boolean isEmbeddedField(final Field field) {
         if (null != field) {
             return (null != field.getAnnotation(Embedded.class));
         }
         return false;
     }
 
-    private boolean hasCellAnnotationOnField(Field field) {
+    private boolean hasCellAnnotationOnField(final Field field) {
         if (null != field) {
             return (null != field.getAnnotation(Cell.class));
         }
         return false;
     }
 
-    private boolean isCorrectEmbeddedField(Field field) {
+    private boolean isCorrectEmbeddedField(final Field field) {
         if (isEmbeddedField(field)) {
             if (!hasCellAnnotationOnField(field)) {
                 return true;
@@ -153,7 +153,7 @@ public class AnnotatedClassDescriber {
 
     }
 
-    private boolean hasNoTypeRecursion(Class declaringClass, Class fieldType) {
+    private boolean hasNoTypeRecursion(final Class declaringClass, final Class fieldType) {
         if (!declaringClass.equals(fieldType)) {
             return true;
         }

@@ -13,7 +13,7 @@ import java.util.Set;
  */
 public interface ReadPoiParserFactory<T> {
 
-    ReadPoiParser<T> createReadPoiParser(InputStream excelInputStream, String sheetName) throws PoiParserException;
+    ReadPoiParser<T> createReadPoiParser(final InputStream excelInputStream, final String sheetName) throws PoiParserException;
 
     public Set<CellDescriptor> getCellDescriptors();
 

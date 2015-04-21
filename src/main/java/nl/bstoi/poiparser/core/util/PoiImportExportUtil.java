@@ -96,7 +96,7 @@ public class PoiImportExportUtil {
      * @param excelFile the excel to get a hash from
      * @return the hash
      */
-    public static String getFileHash(File excelFile) {
+    public static String getFileHash(final File excelFile) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             FileInputStream fis = new FileInputStream(excelFile);

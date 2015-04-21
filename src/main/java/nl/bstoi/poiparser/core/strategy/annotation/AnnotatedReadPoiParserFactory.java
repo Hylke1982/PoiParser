@@ -24,11 +24,11 @@ public class AnnotatedReadPoiParserFactory<T> extends AbstractPoiParserFactory i
     private final Class<T> clazz;
 
 
-    public AnnotatedReadPoiParserFactory(Class<T> clazz) {
+    public AnnotatedReadPoiParserFactory(final Class<T> clazz) {
         this.clazz = clazz;
     }
 
-    public ReadPoiParser<T> createReadPoiParser(InputStream excelInputStream, String sheetName) throws PoiParserException {
+    public ReadPoiParser<T> createReadPoiParser(final InputStream excelInputStream, final String sheetName) throws PoiParserException {
         if (null == excelInputStream) throw new IllegalArgumentException("Excel input stream cannot be null");
         if (StringUtils.isEmpty(sheetName)) throw new IllegalArgumentException("Sheet name cannot be empty");
         AnnotatedReadPoiParser<T> annotatedReadPoiParser = new AnnotatedReadPoiParser<T>(getCellDescriptors(), getSheetFromInputStream(excelInputStream, sheetName), clazz);
@@ -49,7 +49,7 @@ public class AnnotatedReadPoiParserFactory<T> extends AbstractPoiParserFactory i
         return this.overrideCellDescriptors;
     }
 
-    public void setOverrideCellDescriptors(Set<CellDescriptor> overrideCellDescriptors) {
+    public void setOverrideCellDescriptors(final Set<CellDescriptor> overrideCellDescriptors) {
         this.overrideCellDescriptors = overrideCellDescriptors;
     }
 }

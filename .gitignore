@@ -1,4 +1,4 @@
-w# Ignored resources
+# Ignored resources
 target/
 .settings/
 .classpath

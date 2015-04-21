@@ -31,7 +31,7 @@ public abstract class AbstractPoiParserFactory {
     protected boolean ignoreFirstRow = false;
     protected Properties columnHeaderProperties;
 
-    protected Sheet getSheetFromInputStream(InputStream inputStream, String sheetName) throws PoiParserException {
+    protected Sheet getSheetFromInputStream(final InputStream inputStream, final String sheetName) throws PoiParserException {
 
         // Read work book
         Workbook workbook = null;
@@ -45,15 +45,17 @@ public abstract class AbstractPoiParserFactory {
         } catch (IOException e) {
             throw new PoiParserException("Cannot read input stream", e);
         } finally {
-            if (null != inputStream) try {
-                inputStream.close();
-            } catch (IOException e) {
-                throw new PoiParserRuntimeException("Cannot close input stream", e);
+            if (null != inputStream) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    throw new PoiParserRuntimeException("Cannot close input stream", e);
+                }
             }
         }
     }
 
-    protected Workbook createNewWorkBook(PoiType poiType) {
+    protected Workbook createNewWorkBook(final PoiType poiType) {
         if (null == poiType) return createNewWorkBook(PoiType.HSSF);
         switch (poiType) {
             case HSSF:
@@ -68,7 +70,7 @@ public abstract class AbstractPoiParserFactory {
     }
 
     public PoiType getPoiType() {
-        return poiType;
+        return this.poiType;
     }
 
 
@@ -76,11 +78,11 @@ public abstract class AbstractPoiParserFactory {
         this.createHeaderRow = createHeaderRow;
     }
 
-    public void setIgnoreFirstRow(boolean ignoreFirstRow) {
+    public void setIgnoreFirstRow(final boolean ignoreFirstRow) {
         this.ignoreFirstRow = ignoreFirstRow;
     }
 
-    public void setColumnHeaderProperties(Properties columnHeaderProperties) {
+    public void setColumnHeaderProperties(final Properties columnHeaderProperties) {
         this.columnHeaderProperties = columnHeaderProperties;
     }
 

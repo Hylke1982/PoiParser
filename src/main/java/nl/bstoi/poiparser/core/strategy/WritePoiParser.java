@@ -11,5 +11,5 @@ import java.util.Map;
  * hylke.stapersma@gmail.com
  */
 public interface WritePoiParser {
-    public void write(Map<String, TypedList<?>> sheetDataset) throws PoiParserException;
+    public void write(final Map<String, TypedList<?>> sheetDataset) throws PoiParserException;
 }

@@ -9,5 +9,5 @@ import java.util.Set;
  */
 public interface WritePoiParserFactory {
 
-    WritePoiParser createWritePoiParser(OutputStream excelInputStream);
+    WritePoiParser createWritePoiParser(final OutputStream excelInputStream);
 }

@@ -11,15 +11,15 @@ public class ReadPoiParserException extends PoiParserException {
 	 */
 	private static final long serialVersionUID = 8190084782674535356L;
 
-	public ReadPoiParserException(String message) {
+	public ReadPoiParserException(final String message) {
 		super(0, 0, message);
 	}
 	
-	public ReadPoiParserException(String message,Throwable throwable) {
+	public ReadPoiParserException(final String message,final Throwable throwable) {
 		super(0, 0, message, throwable);
 	}
 	
-	public ReadPoiParserException(int rowNumber, int columnNumber,Throwable throwable) {
+	public ReadPoiParserException(final int rowNumber,final int columnNumber,final Throwable throwable) {
 		super(rowNumber, columnNumber, message, throwable);
 	}
 }

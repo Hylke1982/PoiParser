@@ -4,29 +4,29 @@ import nl.bstoi.poiparser.api.strategy.converter.Converter;
 
 import org.apache.poi.ss.usermodel.Cell;
 
-public class IntegerConvertor implements Converter<Integer>{
-	
-	public Integer readCell(Cell cell) {
-		Double cellValue = null;
-		if(null!=cell){
-			try{
-				// First try to read as a numeric
-				cellValue = cell.getNumericCellValue();
-			}catch(IllegalStateException isex){
-				// Other wise do string conversion
-				cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
-			}
-		}
-		if(null!=cellValue) return cellValue.intValue();
-		return null;
-	}
-	
-	public Integer readCell(Cell cell, String regex) {
-		return readCell(cell);
-	}
-	
-	public void writeCell(Cell cell, Integer value) {
-		if(null!=value) cell.setCellValue(value);
-	}
+public class IntegerConvertor implements Converter<Integer> {
+
+    public Integer readCell(final Cell cell) {
+        Double cellValue = null;
+        if (null != cell) {
+            try {
+                // First try to read as a numeric
+                cellValue = cell.getNumericCellValue();
+            } catch (final IllegalStateException isex) {
+                // Other wise do string conversion
+                cellValue = Double.parseDouble(cell.getRichStringCellValue().getString().trim());
+            }
+        }
+        if (null != cellValue) return cellValue.intValue();
+        return null;
+    }
+
+    public Integer readCell(final Cell cell, final String regex) {
+        return readCell(cell);
+    }
+
+    public void writeCell(final Cell cell, final Integer value) {
+        if (null != value) cell.setCellValue(value);
+    }
 
 }

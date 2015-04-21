@@ -12,9 +12,9 @@ import java.io.OutputStream;
  * hylke.stapersma@gmail.com
  */
 public class AnnotatedWritePoiParserFactory extends AbstractPoiParserFactory implements WritePoiParserFactory {
-    public WritePoiParser createWritePoiParser(OutputStream outputStream) {
+    public WritePoiParser createWritePoiParser(final OutputStream outputStream) {
         if (null == outputStream) throw new IllegalArgumentException("Output stream cannot be null.");
-        AnnotatedWritePoiParser annotatedWritePoiParser = new AnnotatedWritePoiParser(outputStream, createNewWorkBook(getPoiType()));
+        AnnotatedWritePoiParser annotatedWritePoiParser = new AnnotatedWritePoiParser(outputStream, createNewWorkBook( getPoiType()));
         annotatedWritePoiParser.setCreateHeaderRow(createHeaderRow);
         if (null != columnHeaderProperties) {
             annotatedWritePoiParser.setColumnHeaderProperties(new ColumnHeaderProperties(columnHeaderProperties));

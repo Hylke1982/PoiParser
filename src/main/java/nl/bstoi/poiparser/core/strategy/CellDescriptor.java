@@ -14,7 +14,7 @@ public class CellDescriptor {
     private boolean required, readIgnore, writeIgnore, embedded;
     private String regex;
 
-    public CellDescriptor(String fieldName, int columnNumber, Class type) {
+    public CellDescriptor(final String fieldName, final int columnNumber, final Class type) {
         this.fieldName = fieldName;
         this.columnNumber = columnNumber;
         this.type = type;
@@ -73,7 +73,7 @@ public class CellDescriptor {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 

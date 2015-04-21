@@ -21,7 +21,7 @@ public class AnnotatedReadPoiParser<T> extends AbstractReadPoiParser implements 
 
     private final static Log log = LogFactory.getLog(AnnotatedReadPoiParser.class);
 
-    public AnnotatedReadPoiParser(Set<CellDescriptor> cellDescriptors, Sheet sheet, Class<T> clazz) {
+    public AnnotatedReadPoiParser(final Set<CellDescriptor> cellDescriptors, final Sheet sheet, final Class<T> clazz) {
         super(cellDescriptors, sheet, clazz);
     }
 
@@ -29,11 +29,11 @@ public class AnnotatedReadPoiParser<T> extends AbstractReadPoiParser implements 
         return readSheet();
     }
 
-    public List<T> read(int startRow) throws PoiParserException {
-        return readSheet(startRow,getSheet().getLastRowNum());
+    public List<T> read(final int startRow) throws PoiParserException {
+        return readSheet(startRow, getSheet().getLastRowNum());
     }
 
-    public List<T> read(int startRow, int endRow) throws PoiParserException {
+    public List<T> read(final int startRow, final int endRow) throws PoiParserException {
         return readSheet(startRow, endRow);
     }
 

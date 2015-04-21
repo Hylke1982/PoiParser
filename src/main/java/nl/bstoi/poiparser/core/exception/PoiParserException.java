@@ -10,19 +10,19 @@ public class PoiParserException extends Exception {
     private int rowNumber;
     private int columnNumber;
 
-    public PoiParserException(int rowNumber, int columnNumber, String message) {
+    public PoiParserException(final int rowNumber,final int columnNumber,final String message) {
         this(rowNumber, columnNumber, message, null);
     }
 
-    public PoiParserException(String message) {
+    public PoiParserException(final String message) {
         super(message);
     }
 
-    public PoiParserException(String message, Throwable throwable) {
+    public PoiParserException(final String message,final Throwable throwable) {
         super(message, throwable);
     }
 
-    public PoiParserException(int rowNumber, int columnNumber, String message, Throwable throwable) {
+    public PoiParserException(final int rowNumber,final int columnNumber,final String message,final Throwable throwable) {
         super(message, throwable);
         this.columnNumber = columnNumber;
         this.rowNumber = rowNumber;
