@@ -1,6 +1,7 @@
 package nl.bstoi.poiparser.core.strategy;
 
 import nl.bstoi.poiparser.api.strategy.converter.Converter;
+import nl.bstoi.poiparser.core.exception.NonExistentConverterException;
 import nl.bstoi.poiparser.core.exception.PoiParserRuntimeException;
 import nl.bstoi.poiparser.core.strategy.factory.DefaultConverterFactory;
 import nl.bstoi.poiparser.core.strategy.util.TypedList;
@@ -45,8 +46,8 @@ public abstract class AbstractWritePoiParser {
 
     protected void writeHeaderRow(final Sheet sheet, final Set<CellDescriptor> sheetCellDescriptors) {
         if (sheet != null) {
-            Row headerRow = sheet.createRow(0);
-            for (CellDescriptor sheetCellDescriptor : sheetCellDescriptors) {
+            final Row headerRow = sheet.createRow(0);
+            for (final CellDescriptor sheetCellDescriptor : sheetCellDescriptors) {
                 writeHeaderCell(sheet.getSheetName(), headerRow, sheetCellDescriptor);
             }
         }
@@ -55,18 +56,20 @@ public abstract class AbstractWritePoiParser {
     protected void writeHeaderCell(final String sheetName, final Row headerRow, final CellDescriptor sheetCellDescriptor) {
         try {
             if (!sheetCellDescriptor.isWriteIgnore()) {
-                Cell cell = headerRow.createCell(sheetCellDescriptor.getColumnNumber());
+                final Cell cell = headerRow.createCell(sheetCellDescriptor.getColumnNumber());
                 String headerColumnName = sheetCellDescriptor.getFieldName();
                 if (hasColumnHeaderProperties() && getColumnHeaderProperties().containsColumnHeader(sheetName, headerColumnName)) {
                     headerColumnName = getColumnHeaderProperties().getColumnHeader(sheetName, headerColumnName);
                 }
-                Converter converter = DEFAULTCONVERTERFACTORY.getConverter(String.class);
+                final Converter converter = DEFAULTCONVERTERFACTORY.getConverter(String.class);
                 converter.writeCell(cell, headerColumnName);
             }
         } catch (final InstantiationException e) {
             log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
         } catch (final IllegalAccessException e) {
             log.trace(String.format("Error writing column header on row %s and column %s with propertyname %s", 0, sheetCellDescriptor.getColumnNumber(), sheetCellDescriptor.getFieldName()), e);
+        } catch (final NonExistentConverterException e) {
+            log.trace("Converter cannot be found", e);
         }
 
     }
@@ -74,7 +77,7 @@ public abstract class AbstractWritePoiParser {
     protected void writeDataRows(final Sheet sheet, final TypedList<?> values, final Set<CellDescriptor> sheetCellDescriptors) {
         if (null != sheet) {
             int index = isCreateHeaderRow() ? 1 : 0;
-            for (Object value : values) {
+            for (final Object value : values) {
                 writeDataRow(sheet, index, value, sheetCellDescriptors);
                 index++;
             }
@@ -82,23 +85,25 @@ public abstract class AbstractWritePoiParser {
     }
 
     protected void writeDataRow(final Sheet sheet, final int index, final Object value, final Set<CellDescriptor> sheetCellDescriptors) {
-        Row row = sheet.createRow(index);
-        for (CellDescriptor cellDescriptor : sheetCellDescriptors) {
-            Object cellValue = readCellValueFromObjectProperty(value, cellDescriptor.getFieldName());
+        final Row row = sheet.createRow(index);
+        for (final CellDescriptor cellDescriptor : sheetCellDescriptors) {
+            final Object cellValue = readCellValueFromObjectProperty(value, cellDescriptor.getFieldName());
             writeDataCell(row, cellValue, cellDescriptor);
         }
     }
 
     protected void writeDataCell(final Row row, final Object cellValue, final CellDescriptor cellDescriptor) {
-        Cell cell = row.createCell(cellDescriptor.getColumnNumber());
+        final Cell cell = row.createCell(cellDescriptor.getColumnNumber());
         if (!cellDescriptor.isWriteIgnore()) {
             try {
-                Converter converter = DEFAULTCONVERTERFACTORY.getConverter(cellDescriptor.getType());
+                final Converter converter = DEFAULTCONVERTERFACTORY.getConverter(cellDescriptor.getType());
                 converter.writeCell(cell, cellValue);
             } catch (final InstantiationException e) {
                 log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
             } catch (final IllegalAccessException e) {
                 log.trace(String.format("Error writing cell on row %s and column %s with propertyname %s", row.getRowNum(), cellDescriptor.getColumnNumber(), cellDescriptor.getFieldName()), e);
+            } catch (final NonExistentConverterException e) {
+                log.trace("Converter cannot be found", e);
             }
         }
     }
@@ -117,7 +122,7 @@ public abstract class AbstractWritePoiParser {
         }
     }
 
-    protected Object readCellValueFromObjectField(final Object object,final String fieldName) {
+    protected Object readCellValueFromObjectField(final Object object, final String fieldName) {
         final String[] splittedFieldNames = getSplittedPropertyName(fieldName);
         Object returnObject = null;
         for (final String splittedFieldName : splittedFieldNames) {
@@ -129,7 +134,7 @@ public abstract class AbstractWritePoiParser {
         return returnObject;
     }
 
-    private Object getFieldFromObject(final Object object,final String fieldName) {
+    private Object getFieldFromObject(final Object object, final String fieldName) {
         try {
             final Field field = object.getClass().getField(fieldName);
             field.setAccessible(true);

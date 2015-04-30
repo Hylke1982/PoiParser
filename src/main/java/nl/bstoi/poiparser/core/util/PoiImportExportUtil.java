@@ -1,5 +1,6 @@
 package nl.bstoi.poiparser.core.util;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -57,13 +58,7 @@ public class PoiImportExportUtil {
         } catch (IOException e) {
             log.error("Error while reading excel file");
         } finally {
-            if (null != inputStream) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    log.error("Error while closing input stream");
-                }
-            }
+            IOUtils.closeQuietly(inputStream);
         }
         return null;
     }
@@ -86,78 +81,6 @@ public class PoiImportExportUtil {
             }
         }
         return fileList;
-    }
-
-    /**
-     * <p>
-     * Get the file hash for a excel file
-     * </p>
-     *
-     * @param excelFile the excel to get a hash from
-     * @return the hash
-     */
-    public static String getFileHash(final File excelFile) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            FileInputStream fis = new FileInputStream(excelFile);
-
-            byte[] dataBytes = new byte[1024];
-
-            int nread = 0;
-            while ((nread = fis.read(dataBytes)) != -1) {
-                md.update(dataBytes, 0, nread);
-            }
-            ;
-            byte[] mdbytes = md.digest();
-
-            // convert the byte to hex format method 2
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < mdbytes.length; i++) {
-                hexString.append(String.format("%02x", mdbytes[i]));
-            }
-
-            log.debug("Hash for file [" + excelFile.getName() + "] is: " + hexString.toString());
-            fis.close();
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            log.error("Hashing algorithm cannot be found.");
-        } catch (IOException e) {
-            log.error("Error while reading file.");
-        }
-        return null;
-    }
-
-    public static String getByteArrayHash(byte[] bytes) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] dataBytes = new byte[1024];
-
-            ByteArrayInputStream bis = new ByteArrayInputStream(bytes);
-
-            int nread = 0;
-            while ((nread = bis.read(dataBytes)) != -1) {
-                md.update(dataBytes, 0, nread);
-            }
-            ;
-
-            byte[] mdbytes = md.digest();
-
-            // convert the byte to hex format method 2
-            StringBuffer hexString = new StringBuffer();
-            for (int i = 0; i < mdbytes.length; i++) {
-                hexString.append(String.format("%02x", mdbytes[i]));
-            }
-
-            bis.close();
-            return hexString.toString();
-
-
-        } catch (NoSuchAlgorithmException e) {
-            log.error("Hashing algorithm cannot be found.");
-        } catch (IOException e) {
-            log.error("Error while reading file.");
-        }
-        return null;
     }
 
 }

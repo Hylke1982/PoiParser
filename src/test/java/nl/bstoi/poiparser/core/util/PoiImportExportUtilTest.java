@@ -23,14 +23,6 @@ public class PoiImportExportUtilTest {
 	}
 	
 	@Test
-	public void testGetFileHash() throws URISyntaxException{
-		final String fileName = "test-excel-001.xls";
-		final File excelFile = new File(PoiImportExportUtil.class.getResource(filePath+fileName).toURI());
-		String fileHash = PoiImportExportUtil.getFileHash(excelFile);
-		assertNotNull(fileHash);
-	}
-	
-	@Test
 	public void testGetSheetNames() throws URISyntaxException{
 		final String fileName = "test-excel-001.xls";
 		final File excelFile = new File(PoiImportExportUtilTest.class.getResource(filePath+fileName).toURI());

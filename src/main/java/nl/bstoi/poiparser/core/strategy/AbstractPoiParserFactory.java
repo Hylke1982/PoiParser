@@ -2,6 +2,7 @@ package nl.bstoi.poiparser.core.strategy;
 
 import nl.bstoi.poiparser.core.exception.PoiParserException;
 import nl.bstoi.poiparser.core.exception.PoiParserRuntimeException;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -45,28 +46,25 @@ public abstract class AbstractPoiParserFactory {
         } catch (IOException e) {
             throw new PoiParserException("Cannot read input stream", e);
         } finally {
-            if (null != inputStream) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    throw new PoiParserRuntimeException("Cannot close input stream", e);
-                }
-            }
+            IOUtils.closeQuietly(inputStream);
         }
     }
 
-    protected Workbook createNewWorkBook(final PoiType poiType) {
-        if (null == poiType) return createNewWorkBook(PoiType.HSSF);
+    protected Workbook createNewWorkBook(PoiType poiType) {
+        if (null == poiType) poiType = PoiType.HSSF;
+        final Workbook workBook;
         switch (poiType) {
-            case HSSF:
-                return new HSSFWorkbook();
             case XSSF:
-                return new XSSFWorkbook();
+                workBook = new XSSFWorkbook();
+                break;
             case SXSSF:
-                return new SXSSFWorkbook();
+                workBook = new SXSSFWorkbook();
+                break;
             default:
-                return new HSSFWorkbook();
+                workBook = new HSSFWorkbook();
+                break;
         }
+        return workBook;
     }
 
     public PoiType getPoiType() {

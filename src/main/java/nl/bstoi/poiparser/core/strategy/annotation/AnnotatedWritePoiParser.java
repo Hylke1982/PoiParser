@@ -5,6 +5,7 @@ import nl.bstoi.poiparser.core.strategy.AbstractWritePoiParser;
 import nl.bstoi.poiparser.core.strategy.CellDescriptor;
 import nl.bstoi.poiparser.core.strategy.WritePoiParser;
 import nl.bstoi.poiparser.core.strategy.util.TypedList;
+import org.apache.commons.io.IOUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.IOException;
@@ -28,20 +29,21 @@ public class AnnotatedWritePoiParser extends AbstractWritePoiParser implements W
     public void write(final Map<String, TypedList<?>> sheetDataset) throws PoiParserException {
         if (null == sheetDataset) throw new IllegalArgumentException("Sheet dataset name cannot be null");
         try {
-            for (String sheetName : sheetDataset.keySet()) {
-                TypedList<?> sheetData = sheetDataset.get(sheetName);
+            for (final String sheetName : sheetDataset.keySet()) {
+                final TypedList<?> sheetData = sheetDataset.get(sheetName);
                 writeSheet(sheetName, sheetData, getCellDescriptorsForGenericList(sheetData));
             }
             getWorkbook().write(outputStream);
-            outputStream.close();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new PoiParserException("Error while writing output stream", e);
+        } finally {
+            IOUtils.closeQuietly(outputStream);
         }
     }
 
     private Set<CellDescriptor> getCellDescriptorsForGenericList(final TypedList<?> list) {
-        AnnotatedClassDescriber annotatedClassDescriber = AnnotatedClassDescriber.getInstance();
-        Set<CellDescriptor> cellDescriptors = annotatedClassDescriber.getCellDescriptorsForClass(list.getType());
+        final AnnotatedClassDescriber annotatedClassDescriber = AnnotatedClassDescriber.getInstance();
+        final Set<CellDescriptor> cellDescriptors = annotatedClassDescriber.getCellDescriptorsForClass(list.getType());
         return cellDescriptors;
     }
 }

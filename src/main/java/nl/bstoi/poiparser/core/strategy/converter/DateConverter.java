@@ -7,13 +7,24 @@ import nl.bstoi.poiparser.api.strategy.converter.Converter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-public class DateConverter implements Converter<Date> {
+public class DateConverter extends AbstractConverter<Date> {
+
+    private static final CellType[] supportedCellTypes = new CellType[]{CellType.NUMERIC};
+
+    protected DateConverter() {
+        super(supportedCellTypes);
+    }
 
     public Date readCell(final Cell cell) {
-        if (null != cell && (cell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cell))) {
-            return cell.getDateCellValue();
+        Date returnValue = null;
+        if (hasValidCell(cell)) {
+            returnValue = cell.getDateCellValue();
         }
-        return null;
+        return returnValue;
+    }
+
+    private boolean hasValidCell(Cell cell) {
+        return null != cell && (isCellTypeSupported(cell) && DateUtil.isCellDateFormatted(cell));
     }
 
     public Date readCell(final Cell cell, final String regex) {

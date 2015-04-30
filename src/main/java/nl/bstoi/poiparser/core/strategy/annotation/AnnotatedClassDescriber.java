@@ -42,19 +42,19 @@ public class AnnotatedClassDescriber {
 
 
     private Set<CellDescriptor> getCellDescriptorsForClass(final String propertyName, final Class clazz) {
-        Set<CellDescriptor> cellDescriptors = new HashSet<CellDescriptor>();
+        final Set<CellDescriptor> cellDescriptors = new HashSet<CellDescriptor>();
         if (clazz.getSuperclass() != Object.class) {
             // Check superclasses first
             addEmbeddedCellDescriptors(cellDescriptors, getCellDescriptorsForClass(propertyName, clazz.getSuperclass()));
         }
-        for (PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
+        for (final PropertyDescriptor propertyDescriptor : PropertyUtils.getPropertyDescriptors(clazz)) {
 
             if (isNotIgnoredProperty(propertyDescriptor)) {
                 Cell cell = null;
                 Class type = null;
                 try {
 
-                    Field field = clazz.getDeclaredField(propertyDescriptor.getDisplayName());
+                    final Field field = clazz.getDeclaredField(propertyDescriptor.getDisplayName());
                     cell = field.getAnnotation(Cell.class);
 
 
@@ -66,7 +66,7 @@ public class AnnotatedClassDescriber {
 
                     if (cell == null) {
                         // When field has no annotation then check method
-                        Method method = propertyDescriptor.getReadMethod();
+                        final Method method = propertyDescriptor.getReadMethod();
                         if (null != method && method.getDeclaringClass().equals(clazz)) {
                             cell = method.getAnnotation(Cell.class);
                             type = method.getReturnType();
@@ -75,11 +75,11 @@ public class AnnotatedClassDescriber {
                         type = field.getType();
                     }
 
-                } catch (SecurityException e) {
+                } catch (final SecurityException e) {
                     throw e; // Rethrow security exception
-                } catch (NoSuchFieldException e) {
+                } catch (final NoSuchFieldException e) {
                     // If field does not exist try to get value from getter(method)
-                    Method method = propertyDescriptor.getReadMethod();
+                    final Method method = propertyDescriptor.getReadMethod();
                     if (null != method && method.getDeclaringClass().equals(clazz)) {
                         cell = method.getAnnotation(Cell.class);
                         type = method.getReturnType();
@@ -94,12 +94,12 @@ public class AnnotatedClassDescriber {
     }
 
     private void addEmbeddedCellDescriptors(Set<CellDescriptor> cellDescriptors, Set<CellDescriptor> embeddedCellDescriptors) {
-        for (CellDescriptor embeddedCellDescriptor : embeddedCellDescriptors) {
+        for (final CellDescriptor embeddedCellDescriptor : embeddedCellDescriptors) {
             addCellDescriptor(cellDescriptors, embeddedCellDescriptor);
         }
     }
 
-    private void addCellDescriptor(Set<CellDescriptor> cellDescriptors, CellDescriptor embeddedCellDescriptor) {
+    private void addCellDescriptor(final Set<CellDescriptor> cellDescriptors,final CellDescriptor embeddedCellDescriptor) {
         if (!cellDescriptors.contains(embeddedCellDescriptor)) {
             cellDescriptors.add(embeddedCellDescriptor);
         } else {
@@ -108,7 +108,7 @@ public class AnnotatedClassDescriber {
     }
 
     private CellDescriptor createCellDescriptor(final String propertyName, final Cell cell, final Class type) {
-        CellDescriptor cellDescriptor = new CellDescriptor(propertyName, cell.columnNumber(), type);
+        final CellDescriptor cellDescriptor = new CellDescriptor(propertyName, cell.columnNumber(), type);
         cellDescriptor.setRequired(cell.required());
         cellDescriptor.setReadIgnore(cell.readIgnore());
         cellDescriptor.setWriteIgnore(cell.writeIgnore());

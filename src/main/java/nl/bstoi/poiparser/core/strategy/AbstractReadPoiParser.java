@@ -50,14 +50,14 @@ public abstract class AbstractReadPoiParser<T> {
 
     protected List<T> readSheet() throws PoiParserException {
         try {
-            List<T> dimensionList = new ArrayList<T>();
+            final List<T> dimensionList = new ArrayList<T>();
             if (null != getSheet()) {
-                Iterator<Row> rowIterator = sheet.rowIterator();
+                final Iterator<Row> rowIterator = sheet.rowIterator();
                 if (rowIterator.hasNext()) {
                     // Skip first row
                     if (ignoreFirstRow) rowIterator.next();
                     while (rowIterator.hasNext()) {
-                        Row row = (Row) rowIterator.next();
+                        final Row row = (Row) rowIterator.next();
                         if (!ignoreRow(row)) {
                             T rowObject = readRow(sheet.getSheetName(), row, clazz.newInstance());
                             dimensionList.add(rowObject);
@@ -132,7 +132,7 @@ public abstract class AbstractReadPoiParser<T> {
             if (cellDescriptor.isReadIgnore()) {
                 return; // When field must be ignored when reading then do nothing.
             }
-            Cell cell = row.getCell(cellDescriptor.getColumnNumber(), Row.RETURN_BLANK_AS_NULL);
+            final Cell cell = row.getCell(cellDescriptor.getColumnNumber(), Row.RETURN_BLANK_AS_NULL);
             if (null != cell) {
                 log.trace("Reading field " + cellDescriptor.getFieldName() + " on row " + row.getRowNum() + " that is mapped on column " + cellDescriptor.getColumnNumber() + " with value: " + cell.toString());
                 Converter converter = converterFactory.getConverter(cellDescriptor.getType());
@@ -163,7 +163,7 @@ public abstract class AbstractReadPoiParser<T> {
     private void populateDimensionAsField(final T rowDimension,final String fieldName,final Converter<T> converter,final Cell cell) throws PoiParserException {
         try {
             rowDimension.getClass().getDeclaredField(fieldName).setAccessible(true);
-            Field field = rowDimension.getClass().getDeclaredField(fieldName);
+            final Field field = rowDimension.getClass().getDeclaredField(fieldName);
             field.setAccessible(true);
             field.set(rowDimension, converter.readCell(cell));
             field.setAccessible(false);
@@ -189,8 +189,8 @@ public abstract class AbstractReadPoiParser<T> {
 
     private void createRequiredUnderlyingInstancesForNestedProperties(final T rowDimension,final String fieldName) {
         String concatName = null;
-        String[] propertyNames = fieldName.split("\\.");
-        for (String createdInstanceName : propertyNames) {
+        final String[] propertyNames = fieldName.split("\\.");
+        for (final String createdInstanceName : propertyNames) {
             if (fieldName.endsWith(createdInstanceName)) return;
             if (null == concatName) {
                 concatName = createdInstanceName;
@@ -199,16 +199,16 @@ public abstract class AbstractReadPoiParser<T> {
             }
             try {
                 if (null == PropertyUtils.getProperty(rowDimension, concatName)) {
-                    Object x = PropertyUtils.getPropertyDescriptor(rowDimension, concatName).getPropertyType().newInstance();
+                    final Object x = PropertyUtils.getPropertyDescriptor(rowDimension, concatName).getPropertyType().newInstance();
                     PropertyUtils.setNestedProperty(rowDimension, concatName, x);
                 }
-            } catch (IllegalAccessException e) {
+            } catch (final IllegalAccessException e) {
                 log.trace("Error creating underlying instance", e);
-            } catch (InvocationTargetException e) {
+            } catch (final InvocationTargetException e) {
                 log.trace("Error creating underlying instance", e);
-            } catch (NoSuchMethodException e) {
+            } catch (final NoSuchMethodException e) {
                 log.trace("Error creating underlying instance", e);
-            } catch (InstantiationException e) {
+            } catch (final InstantiationException e) {
                 log.trace("Error creating underlying instance", e);
             }
         }

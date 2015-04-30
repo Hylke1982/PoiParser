@@ -112,7 +112,7 @@ public class AnnotatedReadPoiParserTest {
         AnnotatedReadPoiParserFactory<EmbeddedTestRow> testRowAnnotatedPoiParserFactory = new AnnotatedReadPoiParserFactory<EmbeddedTestRow>(EmbeddedTestRow.class);
         ReadPoiParser<EmbeddedTestRow> testRowAnnotatedPoiParser = testRowAnnotatedPoiParserFactory.createReadPoiParser(new FileInputStream(excelFile), "EmbeddedTest");
 
-        List<EmbeddedTestRow> testRowClasses = testRowAnnotatedPoiParser.read();
+        final List<EmbeddedTestRow> testRowClasses = testRowAnnotatedPoiParser.read();
         Assert.assertEquals(2, testRowClasses.size());
         Assert.assertThat(testRowClasses, Matchers.hasItem(TestHelper.createEmbeddedTestRowMatcher(new Short("111"), new Integer("222"), new Long("333"), new BigDecimal("444"))));
         Assert.assertThat(testRowClasses, Matchers.hasItem(TestHelper.createEmbeddedTestRowMatcher(new Short("555"), new Integer("666"), null, null)));

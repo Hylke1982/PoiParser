@@ -7,14 +7,26 @@ import nl.bstoi.poiparser.api.strategy.converter.Converter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DateUtil;
 
-public class CalendarConverter implements Converter<Calendar> {
+public class CalendarConverter extends AbstractConverter<Calendar> {
+
+    private final static CellType[] supportedCellTypes = new CellType[]{CellType.NUMERIC};
+
+    public CalendarConverter() {
+        super(supportedCellTypes);
+    }
 
     public Calendar readCell(final Cell cell) {
-        if (null != cell && (cell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(cell))) {
-            Calendar cal = Calendar.getInstance();
+        Calendar returnValue = null;
+        if (hasValidCell(cell)) {
+            final Calendar cal = Calendar.getInstance();
             cal.setTime(cell.getDateCellValue());
+            returnValue = cal;
         }
-        return null;
+        return returnValue;
+    }
+
+    private boolean hasValidCell(Cell cell) {
+        return null != cell && (isCellTypeSupported(cell) && DateUtil.isCellDateFormatted(cell));
     }
 
     public Calendar readCell(final Cell cell, final String regex) {

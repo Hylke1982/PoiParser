@@ -11,7 +11,7 @@ public class TypedArrayList<T> extends ArrayList<T> implements TypedList<T> {
 
     private final Class<T> clazz;
 
-    public TypedArrayList(final Class<T> clazz, Collection c) {
+    public TypedArrayList(final Class<T> clazz, final Collection<T> c) {
         super(c);
         this.clazz = clazz;
     }
@@ -26,7 +26,7 @@ public class TypedArrayList<T> extends ArrayList<T> implements TypedList<T> {
         this.clazz = clazz;
     }
 
-    public Class getType() {
+    public Class<T> getType() {
         return this.clazz;
     }
 }
