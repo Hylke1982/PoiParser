@@ -18,7 +18,7 @@ import java.util.Set;
  * Hylke Stapersma
  * hylke.stapersma@gmail.com
  */
-public class AnnotatedClassDescriber {
+public class AnnotatedClassDescriber implements nl.bstoi.poiparser.api.ClassDescriber {
 
     private final static String[] DEFAULT_IGNORED_PROPERTYNAMES = {"class"};
     private String[] ignorePropertyName = DEFAULT_IGNORED_PROPERTYNAMES;
@@ -36,6 +36,7 @@ public class AnnotatedClassDescriber {
 
     }
 
+    @Override
     public Set<CellDescriptor> getCellDescriptorsForClass(final Class clazz) {
         return getCellDescriptorsForClass(null, clazz);
     }
