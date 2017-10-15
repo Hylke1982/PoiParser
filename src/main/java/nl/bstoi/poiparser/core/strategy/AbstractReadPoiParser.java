@@ -105,7 +105,7 @@ public abstract class AbstractReadPoiParser<T> {
         if (null != row) {
             for (final CellDescriptor cellDescriptor : getCellDescriptors()) {
                 final Integer columnNumber = cellDescriptor.getColumnNumber();
-                if (!isEmptyValue(row.getCell(columnNumber, Row.RETURN_BLANK_AS_NULL))) return false;
+                if (!isEmptyValue(row.getCell(columnNumber, Row.MissingCellPolicy.RETURN_BLANK_AS_NULL))) return false;
             }
         }
         return true;
@@ -132,7 +132,7 @@ public abstract class AbstractReadPoiParser<T> {
             if (cellDescriptor.isReadIgnore()) {
                 return; // When field must be ignored when reading then do nothing.
             }
-            final Cell cell = row.getCell(cellDescriptor.getColumnNumber(), Row.RETURN_BLANK_AS_NULL);
+            final Cell cell = row.getCell(cellDescriptor.getColumnNumber(), Row.MissingCellPolicy.RETURN_BLANK_AS_NULL);
             if (null != cell) {
                 log.trace("Reading field " + cellDescriptor.getFieldName() + " on row " + row.getRowNum() + " that is mapped on column " + cellDescriptor.getColumnNumber() + " with value: " + cell.toString());
                 Converter converter = converterFactory.getConverter(cellDescriptor.getType());
