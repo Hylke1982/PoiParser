@@ -26,8 +26,8 @@
 
     <!-- Source code management information -->
     <scm>
-        <connection>scm:git:git://github.com/Hylke1982/PoiParser.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/Hylke1982/PoiParser.git</developerConnection>
+        <connection>scm:git:git@github.com/Hylke1982/PoiParser.git</connection>
+        <developerConnection>scm:git:git@github.com/Hylke1982/PoiParser.git</developerConnection>
         <url>http://github.com/Hylke1982/PoiParser</url>
     </scm>
 
@@ -154,9 +154,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
-                <configuration>
-                    <pushChanges>false</pushChanges>
-                </configuration>
             </plugin>
 
 
