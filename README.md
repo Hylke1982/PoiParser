@@ -18,7 +18,7 @@ The following changes have been made.
 Requirements
 ------------
 
-- jdk 5+
+- jdk 8+
 
 Maven
 -----
