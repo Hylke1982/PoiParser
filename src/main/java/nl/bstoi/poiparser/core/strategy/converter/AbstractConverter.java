@@ -26,6 +26,6 @@ public abstract class AbstractConverter<T> implements Converter<T> {
     }
 
     protected CellType getCellType(final Cell cell) {
-        return CellType.getCellTypeBasedOnNumeric(cell.getCellType());
+        return CellType.getCellTypePoiCellType(cell.getCellType());
     }
 }

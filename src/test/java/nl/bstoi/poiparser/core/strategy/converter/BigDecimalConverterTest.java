@@ -2,6 +2,7 @@ package nl.bstoi.poiparser.core.strategy.converter;
 
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -11,9 +12,7 @@ import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyDouble;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by hylke on 23/04/15.
@@ -34,6 +33,7 @@ public class BigDecimalConverterTest {
     @Test
     public void testReadCellAsNumeric() throws Exception {
         when(mockCell.getNumericCellValue()).thenReturn(234.5);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         final BigDecimal value = bigDecimalConverter.readCell(mockCell);
         assertEquals(new BigDecimal("234.5"), value);
     }
@@ -41,6 +41,7 @@ public class BigDecimalConverterTest {
     @Test
     public void testReadCellAsNumericWithIgnoredRegex() throws Exception {
         when(mockCell.getNumericCellValue()).thenReturn(234.5);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         final BigDecimal value = bigDecimalConverter.readCell(mockCell, "bla");
         assertEquals(new BigDecimal("234.5"), value);
     }
@@ -48,6 +49,7 @@ public class BigDecimalConverterTest {
     @Test
     public void testReadCellAsNumericWithIllegalValueWithoutRegex() throws Exception {
         when(mockCell.getNumericCellValue()).thenThrow(new IllegalStateException());
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("456.5"));
         final BigDecimal value = bigDecimalConverter.readCell(mockCell);
         assertEquals(new BigDecimal("456.5"), value);
@@ -56,6 +58,7 @@ public class BigDecimalConverterTest {
     @Test
     public void testReadCellAsNumericWithIllegalValueWithRegex() throws Exception {
         when(mockCell.getNumericCellValue()).thenThrow(new IllegalStateException());
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("456.5"));
         final BigDecimal value = bigDecimalConverter.readCell(mockCell, ".*");
         assertEquals(new BigDecimal("456.5"), value);
@@ -63,7 +66,7 @@ public class BigDecimalConverterTest {
 
     @Test
     public void testReadCellAsStringWithIllegalValueWithoutRegex() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(CellType.STRING);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("456.5"));
         final BigDecimal value = bigDecimalConverter.readCell(mockCell);
         assertEquals(new BigDecimal("456.5"), value);
@@ -71,7 +74,7 @@ public class BigDecimalConverterTest {
 
     @Test
     public void testReadCellAsStringWithIllegalValueWithRegex() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(CellType.STRING);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("456.5"));
         final BigDecimal value = bigDecimalConverter.readCell(mockCell, ".*");
         assertEquals(new BigDecimal("456.5"), value);

@@ -43,19 +43,19 @@ public class AbstractConverterTest {
 
     @Test
     public void testIsCellTypeSupported1() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_BOOLEAN);
+        when(mockCell.getCellType()).thenReturn(org.apache.poi.ss.usermodel.CellType.BOOLEAN);
         assertTrue(abstractConverter.isCellTypeSupported(mockCell));
     }
 
     @Test
     public void testIsCellTypeSupported2() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_NUMERIC);
+        when(mockCell.getCellType()).thenReturn(org.apache.poi.ss.usermodel.CellType.NUMERIC);
         assertTrue(abstractConverter.isCellTypeSupported(mockCell));
     }
 
     @Test
     public void testIsCellTypeNotSupported() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(org.apache.poi.ss.usermodel.CellType.STRING);
         assertFalse(abstractConverter.isCellTypeSupported(mockCell));
     }
 
@@ -69,16 +69,10 @@ public class AbstractConverterTest {
         }
     }
 
-    @Test(expected = IllegalStateException.class)
-    public void testIsCellTypeNotSupportedUnknownCellType() throws Exception {
-        when(mockCell.getCellType()).thenReturn(78234);
-        assertFalse(abstractConverter.isCellTypeSupported(mockCell));
-    }
-
 
     @Test
     public void testGetCellType() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(org.apache.poi.ss.usermodel.CellType.STRING);
         assertEquals(CellType.STRING, abstractConverter.getCellType(mockCell));
     }
 }

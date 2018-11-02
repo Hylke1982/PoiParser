@@ -24,29 +24,19 @@ public class CellTypeTest {
 
     @Test
     public void testGetNumericCellType() throws Exception {
-        assertEquals(Cell.CELL_TYPE_NUMERIC, CellType.NUMERIC.getNumericCellType());
-        assertEquals(Cell.CELL_TYPE_STRING, CellType.STRING.getNumericCellType());
-        assertEquals(Cell.CELL_TYPE_FORMULA, CellType.FORMULA.getNumericCellType());
-        assertEquals(Cell.CELL_TYPE_BLANK, CellType.BLANK.getNumericCellType());
-        assertEquals(Cell.CELL_TYPE_BOOLEAN, CellType.BOOLEAN.getNumericCellType());
-    }
-
-    @Test
-    public void testGetCellTypeBasedOnNumericNonExisting() throws Exception {
-        try {
-            CellType.getCellTypeBasedOnNumeric(34584234);
-            fail("Should not reach this point");
-        } catch (final IllegalStateException e) {
-            assertEquals("CellType with numeric value 34584234 cannot be found", e.getMessage());
-        }
+        assertEquals(org.apache.poi.ss.usermodel.CellType.NUMERIC, CellType.NUMERIC.getPoiCellType());
+        assertEquals(org.apache.poi.ss.usermodel.CellType.STRING, CellType.STRING.getPoiCellType());
+        assertEquals(org.apache.poi.ss.usermodel.CellType.FORMULA, CellType.FORMULA.getPoiCellType());
+        assertEquals(org.apache.poi.ss.usermodel.CellType.BLANK, CellType.BLANK.getPoiCellType());
+        assertEquals(org.apache.poi.ss.usermodel.CellType.BOOLEAN, CellType.BOOLEAN.getPoiCellType());
     }
 
     @Test
     public void testGetCellTypeBasedOnNumeric() throws Exception {
-        assertEquals(CellType.NUMERIC, CellType.getCellTypeBasedOnNumeric(Cell.CELL_TYPE_NUMERIC));
-        assertEquals(CellType.STRING, CellType.getCellTypeBasedOnNumeric(Cell.CELL_TYPE_STRING));
-        assertEquals(CellType.FORMULA, CellType.getCellTypeBasedOnNumeric(Cell.CELL_TYPE_FORMULA));
-        assertEquals(CellType.BLANK, CellType.getCellTypeBasedOnNumeric(Cell.CELL_TYPE_BLANK));
-        assertEquals(CellType.BOOLEAN, CellType.getCellTypeBasedOnNumeric(Cell.CELL_TYPE_BOOLEAN));
+        assertEquals(CellType.NUMERIC, CellType.getCellTypePoiCellType(org.apache.poi.ss.usermodel.CellType.NUMERIC));
+        assertEquals(CellType.STRING, CellType.getCellTypePoiCellType(org.apache.poi.ss.usermodel.CellType.STRING));
+        assertEquals(CellType.FORMULA, CellType.getCellTypePoiCellType(org.apache.poi.ss.usermodel.CellType.FORMULA));
+        assertEquals(CellType.BLANK, CellType.getCellTypePoiCellType(org.apache.poi.ss.usermodel.CellType.BLANK));
+        assertEquals(CellType.BOOLEAN, CellType.getCellTypePoiCellType(org.apache.poi.ss.usermodel.CellType.BOOLEAN));
     }
 }

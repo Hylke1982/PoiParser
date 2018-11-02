@@ -2,6 +2,7 @@ package nl.bstoi.poiparser.core.strategy.converter;
 
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -32,19 +33,20 @@ public class BooleanConverterTest {
     @Test
     public void testReadCellAsDefault() throws Exception {
         when(mockCell.getNumericCellValue()).thenReturn(1.);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         assertTrue(booleanConverter.readCell(mockCell));
     }
 
     @Test
     public void testReadCellAsNumeric() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_NUMERIC);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getNumericCellValue()).thenReturn(1.);
         assertTrue(booleanConverter.readCell(mockCell));
     }
 
     @Test
     public void testReadCellAsNumericFalseValue() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_NUMERIC);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getNumericCellValue()).thenReturn(2.);
         assertFalse(booleanConverter.readCell(mockCell));
     }
@@ -61,14 +63,14 @@ public class BooleanConverterTest {
 
     @Test
     public void testReadCellAsBooleanWithoutRegex() {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_BOOLEAN);
+        when(mockCell.getCellType()).thenReturn(CellType.BOOLEAN);
         when(mockCell.getBooleanCellValue()).thenReturn(Boolean.TRUE);
         assertTrue(booleanConverter.readCell(mockCell));
     }
 
     @Test
     public void testReadCellAsBooleanWithRegex() {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_BOOLEAN);
+        when(mockCell.getCellType()).thenReturn(CellType.BOOLEAN);
         when(mockCell.getBooleanCellValue()).thenReturn(Boolean.TRUE);
         assertTrue(booleanConverter.readCell(mockCell, ".*"));
     }
@@ -99,7 +101,7 @@ public class BooleanConverterTest {
     }
 
     private void validateBooleanAsStringValue(final String value, boolean expectedResult) {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(CellType.STRING);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString(value));
         assertEquals(expectedResult, booleanConverter.readCell(mockCell, ".*"));
     }

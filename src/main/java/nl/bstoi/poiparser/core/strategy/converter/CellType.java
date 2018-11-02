@@ -1,25 +1,23 @@
 package nl.bstoi.poiparser.core.strategy.converter;
 
-import org.apache.poi.ss.usermodel.Cell;
-
 /**
  * Created by hylke on 23/04/15.
  */
 public enum CellType {
-    NUMERIC(Cell.CELL_TYPE_NUMERIC),
-    STRING(Cell.CELL_TYPE_STRING),
-    FORMULA(Cell.CELL_TYPE_FORMULA),
-    BLANK(Cell.CELL_TYPE_BLANK),
-    BOOLEAN(Cell.CELL_TYPE_BOOLEAN);
+    NUMERIC(org.apache.poi.ss.usermodel.CellType.NUMERIC),
+    STRING(org.apache.poi.ss.usermodel.CellType.STRING),
+    FORMULA(org.apache.poi.ss.usermodel.CellType.FORMULA),
+    BLANK(org.apache.poi.ss.usermodel.CellType.BLANK),
+    BOOLEAN(org.apache.poi.ss.usermodel.CellType.BOOLEAN);
 
-    private final int numericCellType;
+    private final org.apache.poi.ss.usermodel.CellType poiCellType;
 
-    CellType(final int numericCellType) {
-        this.numericCellType = numericCellType;
+    CellType(final org.apache.poi.ss.usermodel.CellType numericCellType) {
+        this.poiCellType = numericCellType;
     }
 
-    public int getNumericCellType() {
-        return numericCellType;
+    public org.apache.poi.ss.usermodel.CellType getPoiCellType() {
+        return poiCellType;
     }
 
     /**
@@ -28,13 +26,13 @@ public enum CellType {
      * @param numericCellType
      * @return
      */
-    public static CellType getCellTypeBasedOnNumeric(final int numericCellType) {
+    public static CellType getCellTypePoiCellType(final org.apache.poi.ss.usermodel.CellType numericCellType) {
         for (final CellType cellType : CellType.values()) {
-            if (cellType.getNumericCellType() == numericCellType) {
+            if (cellType.getPoiCellType() == numericCellType) {
                 return cellType;
             }
         }
-        throw new IllegalStateException(String.format("CellType with numeric value %d cannot be found", numericCellType));
+        throw new IllegalStateException(String.format("CellType with value %s cannot be found", numericCellType));
     }
 
 }

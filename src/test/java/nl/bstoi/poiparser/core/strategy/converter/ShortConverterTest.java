@@ -2,6 +2,7 @@ package nl.bstoi.poiparser.core.strategy.converter;
 
 import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -41,19 +42,20 @@ public class ShortConverterTest {
 
     @Test
     public void testReadCellWithUnsupportedType() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_BOOLEAN);
+        when(mockCell.getCellType()).thenReturn(CellType.BOOLEAN);
         assertNull(shortConverter.readCell(null));
     }
 
     @Test
     public void testReadCellWithUnsupportedTypeWithRegex() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_BOOLEAN);
+        when(mockCell.getCellType()).thenReturn(CellType.BOOLEAN);
         assertNull(shortConverter.readCell(null, ".*"));
     }
 
     @Test
     public void testReadCellAsNumeric() throws Exception {
         when(mockCell.getNumericCellValue()).thenReturn(5635.);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         final Short value = shortConverter.readCell(mockCell);
         assertNotNull(value);
         assertEquals(new Short("5635"), value);
@@ -62,6 +64,7 @@ public class ShortConverterTest {
     @Test
     public void testReadCellAsNumericWithStringFallback() throws Exception {
         when(mockCell.getNumericCellValue()).thenThrow(new IllegalStateException());
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("3456.8"));
         final Short value = shortConverter.readCell(mockCell);
         assertNotNull(value);
@@ -70,7 +73,7 @@ public class ShortConverterTest {
 
     @Test
     public void testReadCellAsExplicitNumeric() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_NUMERIC);
+        when(mockCell.getCellType()).thenReturn(CellType.NUMERIC);
         when(mockCell.getNumericCellValue()).thenReturn(5462.);
         final Short value = shortConverter.readCell(mockCell);
         assertNotNull(value);
@@ -79,7 +82,7 @@ public class ShortConverterTest {
 
     @Test
     public void testReadCellAsString() throws Exception {
-        when(mockCell.getCellType()).thenReturn(Cell.CELL_TYPE_STRING);
+        when(mockCell.getCellType()).thenReturn(CellType.STRING);
         when(mockCell.getRichStringCellValue()).thenReturn(new HSSFRichTextString("3456"));
         final Short value = shortConverter.readCell(mockCell);
         assertNotNull(value);

@@ -39,8 +39,6 @@ public abstract class AbstractPoiParserFactory {
         try {
             workbook = WorkbookFactory.create(inputStream);
             return workbook.getSheet(sheetName);
-        } catch (InvalidFormatException e) {
-            throw new PoiParserException("Cannot read input stream", e);
         } catch (IllegalArgumentException e) {
             throw new PoiParserException("Cannot read input stream", e);
         } catch (IOException e) {
