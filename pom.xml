@@ -4,7 +4,7 @@
     <artifactId>PoiParser</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <version>4.0.2-SNAPSHOT</version>
+    <version>4.0.2</version>
     <url>http://www.bstoi.nl/PoiParser/</url>
 
     <!-- Sonatype parent -->
@@ -29,7 +29,7 @@
         <connection>scm:git:git@github.com:Hylke1982/PoiParser.git</connection>
         <developerConnection>scm:git:git@github.com:Hylke1982/PoiParser.git</developerConnection>
         <url>http://github.com/Hylke1982/PoiParser</url>
-      <tag>HEAD</tag>
+      <tag>PoiParser-4.0.2</tag>
   </scm>
 
     <!-- License information -->
