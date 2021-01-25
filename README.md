@@ -29,7 +29,7 @@ To include PoiParser in your project using maven.
 <dependency>
     <groupId>nl.bstoi.poiparser</groupId>
     <artifactId>PoiParser</artifactId>
-    <version>4.1.2</version>
+    <version>5.0.0</version>
 </dependency>
 ```
 
