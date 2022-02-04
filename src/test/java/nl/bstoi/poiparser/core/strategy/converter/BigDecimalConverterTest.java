@@ -11,7 +11,6 @@ import org.mockito.MockitoAnnotations;
 import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyDouble;
 import static org.mockito.Mockito.*;
 
 /**
