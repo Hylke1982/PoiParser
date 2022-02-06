@@ -4,7 +4,7 @@
     <artifactId>PoiParser</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <version>5.1.0-SNAPSHOT</version>
+    <version>5.1.1-SNAPSHOT</version>
     <url>http://www.bstoi.nl/PoiParser/</url>
 
     <!-- Sonatype parent -->
