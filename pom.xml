@@ -118,7 +118,7 @@
 
     <!-- Properties -->
     <properties>
-        <poi.version>5.2.4</poi.version>
+        <poi.version>5.2.5</poi.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.3.1</mockito.version>
         <commons.io.version>2.14.0</commons.io.version>
