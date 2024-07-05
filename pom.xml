@@ -4,7 +4,7 @@
     <artifactId>PoiParser</artifactId>
     <packaging>jar</packaging>
     <name>${project.artifactId}</name>
-    <version>5.2.6-SNAPSHOT</version>
+    <version>5.3.0-SNAPSHOT</version>
     <url>http://www.bstoi.nl/PoiParser/</url>
 
     <!-- Sonatype parent -->
@@ -118,10 +118,10 @@
 
     <!-- Properties -->
     <properties>
-        <poi.version>5.2.5</poi.version>
+        <poi.version>5.3.0</poi.version>
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.3.1</mockito.version>
-        <commons.io.version>2.14.0</commons.io.version>
+        <commons.io.version>2.16.1</commons.io.version>
         <commons.beanutils.version>1.9.4</commons.beanutils.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.13.1</junit.version>
@@ -145,7 +145,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.9</version>
+                <version>3.3.0</version>
                 <configuration>
                     <additionalClasspathElements>
                         <additionalClasspathElement>test-classes/</additionalClasspathElement>
