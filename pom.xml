@@ -122,7 +122,7 @@
         <hamcrest.version>2.2</hamcrest.version>
         <mockito.version>4.3.1</mockito.version>
         <commons.io.version>2.16.1</commons.io.version>
-        <commons.beanutils.version>1.9.4</commons.beanutils.version>
+        <commons.beanutils.version>1.11.0</commons.beanutils.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>4.13.1</junit.version>
     </properties>
